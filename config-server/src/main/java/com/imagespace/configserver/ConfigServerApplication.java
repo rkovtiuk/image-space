@@ -1,4 +1,4 @@
-package com.rkovtiuk.imagespace.configserver;
+package com.imagespace.configserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
