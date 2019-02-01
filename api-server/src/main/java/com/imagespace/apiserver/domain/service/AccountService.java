@@ -5,12 +5,16 @@ import com.imagespace.apiserver.domain.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
 
     private final AccountRepository accountRepository;
+
+    public Optional<Account> findAccountById(String id) {
+        return accountRepository.findOneById(id);
+    }
 
 }

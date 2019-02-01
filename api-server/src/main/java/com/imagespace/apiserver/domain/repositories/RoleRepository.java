@@ -1,14 +1,15 @@
 package com.imagespace.apiserver.domain.repositories;
 
 import com.imagespace.apiserver.domain.entity.Account;
+import com.imagespace.apiserver.domain.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, String> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    Optional<Account> findOneById(String id);
+    List<Role> findAllByAccount(Account account);
 
 }
