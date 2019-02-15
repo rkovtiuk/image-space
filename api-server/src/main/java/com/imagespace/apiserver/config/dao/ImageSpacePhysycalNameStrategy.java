@@ -1,4 +1,4 @@
-package com.imagespace.apiserver.config;
+package com.imagespace.apiserver.config.dao;
 
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
