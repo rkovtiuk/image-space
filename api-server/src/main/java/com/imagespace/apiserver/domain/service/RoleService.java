@@ -4,7 +4,6 @@ import com.imagespace.apiserver.domain.entity.Account;
 import com.imagespace.apiserver.domain.entity.Role;
 import com.imagespace.apiserver.domain.repositories.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
