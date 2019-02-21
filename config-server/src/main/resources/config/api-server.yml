@@ -17,7 +17,8 @@ logging:
 security:
   properties:
     client-id: image-space-client
-    client-secret: $2a$04$e/c1/RfsWuThaWFCrcCuJeoyvwCV0URN/6Pn9ZFlrtIWaU/vj/BfG
+    # image-space-secret
+    client-secret: $2a$04$i0gM/CmwfDpItrdD82Sa2eJTAOGj33xILUlznfmuUJ64MW46Mb6qm
     grant-type-password: password
     authorization-code: authorization_code
     refresh-token: refresh_token
@@ -25,5 +26,5 @@ security:
     scope-read: read
     scope-write: write
     trust: trust
-    access-token-validity-seconds:
-    refresh-token-validity-seconds:
+    access-token-validity-seconds: 3600
+    refresh-token-validity-seconds: 21600

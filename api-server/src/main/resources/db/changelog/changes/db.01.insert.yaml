@@ -1,0 +1,49 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: rkovtiuk
+      changes:
+        - insert:
+            tableName: account
+            columns:
+              - column:
+                  name: id
+                  value: rkovtiuk
+              - column:
+                  name: password
+                  value: $2a$04$MM6wCLIiNigrDvzIK73dye.T32U.jrG6eEdYHSlc3dbFpnO1dvAYq #rkovtiuk
+              - column:
+                  name: name
+                  value: Robert Kovtiuk
+              - column:
+                  name: info
+                  value: Software Engineer
+
+  - changeSet:
+      id: 2
+      author: rkovtiuk
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: USER
+              - column:
+                  name: account_id
+                  value: rkovtiuk
+
+  - changeSet:
+      id: 3
+      author: rkovtiuk
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: ADMIN
+              - column:
+                  name: account_id
+                  value: rkovtiuk
