@@ -10,8 +10,9 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>config-server</module>
-        <module>api-server</module>
         <module>discover-server</module>
+        <module>core-server</module>
+        <module>api-server</module>
     </modules>
 
 </project>

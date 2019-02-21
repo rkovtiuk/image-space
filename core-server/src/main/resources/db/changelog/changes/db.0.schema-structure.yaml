@@ -1,0 +1,114 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: rkovtiuk
+      changes:
+        - createTable:
+            tableName: account
+            columns:
+              - column:
+                  name: id
+                  type: varchar(55)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(55)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: info
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: rkovtiuk
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_role_account_id
+                    references: account(id)
+
+  - changeSet:
+      id: 3
+      author: rkovtiuk
+      changes:
+        - createTable:
+            tableName: post
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_post_account_id
+                    references: account(id)
