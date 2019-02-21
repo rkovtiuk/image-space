@@ -14,7 +14,7 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    public List<Role> findAllByAccount(Account account) {
-        return roleRepository.findAllByAccount(account);
+    public List<Role> findAllByAccount(String accountId) {
+        return roleRepository.findAllByAccount_Id(accountId);
     }
 }

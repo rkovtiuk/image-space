@@ -1,6 +1,7 @@
-package com.imagespace.core.domain.service;
+package com.imagespace.api.domain.service;
 
-import com.imagespace.core.domain.entity.Account;
+import com.imagespace.api.domain.client.AccountClient;
+import com.imagespace.api.domain.client.RoleClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,19 +17,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final AccountService accountService;
-    private final RoleService roleService;
+    private final AccountClient accountClient;
+    private final RoleClient roleClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return accountService.findAccountById(username)
-            .map(account -> new User(username, account.getPassword(), getAuthority(account)))
+        return accountClient.findAccountById(username)
+            .map(account -> new User(username, account.getPassword(), getAuthority(account.getId())))
             .orElseThrow(() -> new UsernameNotFoundException("Invalid account"));
     }
 
-    private List<SimpleGrantedAuthority> getAuthority(Account account) {
-        return roleService.findAllByAccount(account).stream()
-            .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
+    private List<SimpleGrantedAuthority> getAuthority(String accountId) {
+        return roleClient.findAllByAccount(accountId).stream()
+            .map(role -> new SimpleGrantedAuthority(role.getName()))
             .collect(Collectors.toList());
     }
 

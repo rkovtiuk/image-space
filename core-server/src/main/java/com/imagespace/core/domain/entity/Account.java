@@ -18,17 +18,13 @@ import javax.persistence.Table;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 public class Account extends BaseEntity {
 
-    @Id
-    String id;
+    @Id String id;
 
-    @Column
-    String password;
+    @Column String password;
 
-    @Column
-    String name;
+    @Column String name;
 
-    @Column
-    String info;
+    @Column String info;
 
 }
 

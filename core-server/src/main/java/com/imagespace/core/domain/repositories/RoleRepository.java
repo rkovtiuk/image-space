@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    List<Role> findAllByAccount(Account account);
+    List<Role> findAllByAccount_Id(String accountId);
 
 }

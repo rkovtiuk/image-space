@@ -2,6 +2,9 @@ server:
   port: 8000
 
 spring:
+  application:
+    name: core-server
+
   jpa:
     show-sql: true
 
