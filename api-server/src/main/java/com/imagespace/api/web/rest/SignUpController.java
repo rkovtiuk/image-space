@@ -1,4 +1,4 @@
-package com.imagespace.api.web;
+package com.imagespace.api.web.rest;
 
 import com.imagespace.api.domain.dto.AccountDto;
 import com.imagespace.api.domain.service.AccountService;
@@ -12,11 +12,11 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 
 @RestController
 @RequiredArgsConstructor
-public class AccountController {
+public class SignUpController {
 
-    private AccountService accountService;
+    private final AccountService accountService;
 
-    @PostMapping("/v1/account/signup")
+    @PostMapping("/v1/signup")
     public void signUp(@RequestBody AccountDto body) {
         if (isEmpty(body.getId()) || isEmpty(body.getPassword()))
             throw new BadRequestException("Some fields are empty");
@@ -27,7 +27,7 @@ public class AccountController {
         accountService.createAccount(body.getId(), body.getPassword());
     }
 
-    @GetMapping("/v1/account/{account}/exists")
+    @GetMapping("/v1/signup/{account}")
     public HttpEntity<Boolean> accountExists(@PathVariable String account) {
         if (!accountService.accountExists(account))
             throw new NotFoundException();
