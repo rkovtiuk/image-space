@@ -4,6 +4,24 @@ server:
 feign:
   hystrix:
     enabled: true
+  client:
+    config:
+      feignName:
+        connectTimeout: 90000
+        readTimeout: 90000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+ribbon:
+  eager-load:
+    enabled: true
+    clients: core-service
 
 logging:
   level:

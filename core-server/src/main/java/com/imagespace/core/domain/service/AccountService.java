@@ -17,4 +17,14 @@ public class AccountService {
         return accountRepository.findOneById(id);
     }
 
+    public boolean exists(String accountId) {
+        return accountRepository.existsAccountById(accountId);
+    }
+
+    public Account createAccount(String id, String password) {
+        return accountRepository.save(
+            new Account()
+                .setId(id)
+                .setPassword(password));
+    }
 }
