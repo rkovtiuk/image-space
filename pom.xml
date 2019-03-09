@@ -13,6 +13,7 @@
         <module>discover-server</module>
         <module>core-server</module>
         <module>api-server</module>
+        <module>source-server</module>
     </modules>
 
 </project>
