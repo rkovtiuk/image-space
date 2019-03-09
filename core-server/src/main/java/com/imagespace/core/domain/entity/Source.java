@@ -6,8 +6,11 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.*;
-
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Table(name = "role")
@@ -15,21 +18,10 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
-public class Role extends BaseEntity {
+public class Source extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Id UUID id;
 
-    @Column
-    @Enumerated
-    RoleType name;
-
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    Account account;
-
-    public enum RoleType {
-        USER, ADMIN
-    }
+    @Lob byte[] data;
 
 }

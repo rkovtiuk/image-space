@@ -29,6 +29,11 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
+                  name: avatar
+                  type: varchar(55)
+                  constraints:
+                    nullable: true
+              - column:
                   name: created_at
                   type: timestamp
                   defaultValueComputed: current_timestamp
@@ -94,6 +99,23 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: source
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: likes
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_post_account_id
+                    references: account(id)
+              - column:
                   name: created_at
                   type: timestamp
                   defaultValueComputed: current_timestamp
@@ -105,10 +127,34 @@ databaseChangeLog:
                   defaultValueComputed: current_timestamp
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: 4
+      author: rkovtiuk
+      changes:
+        - createTable:
+            tableName: source
+            columns:
               - column:
-                  name: account_id
+                  name: id
                   type: varchar(55)
                   constraints:
+                    primaryKey: true
                     nullable: false
-                    foreignKeyName: fk_post_account_id
-                    references: account(id)
+              - column:
+                  name: data
+                  type: blob
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false

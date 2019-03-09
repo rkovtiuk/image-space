@@ -19,6 +19,10 @@ public class Post extends BaseEntity {
 
     @Id UUID id;
 
+    @Column UUID source;
+
+    @Column int likes;
+
     @ManyToOne
     @JoinColumn(name = "account_id")
     Account account;
