@@ -1,5 +1,6 @@
 package com.imagespace.api.config.producer;
 
+import com.imagespace.api.domain.dto.ImageEventDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -39,12 +40,12 @@ public class ProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String, ImageEventDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate() {
+    public KafkaTemplate<String, ImageEventDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
