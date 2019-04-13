@@ -1,6 +1,19 @@
 server:
   port: 8080
 
+spring:
+  kafka:
+    consumer:
+      group-id: img-events
+      auto-offset-reset: none
+    # change this property if you are using your own
+    # Kafka cluster or your Docker IP is different
+    bootstrap-servers: localhost:9092
+
+img-producer:
+  topic-name: img-event-topic
+  msg-per-request: 1
+
 feign:
   hystrix:
     enabled: true
