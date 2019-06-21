@@ -1,7 +1,6 @@
 package com.imagespace.core.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.imagespace.core.domain.entity.Post;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,21 +15,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostDto {
-
-    @JsonProperty("id")
-    UUID id;
+public class LikeDto {
 
     @JsonProperty("account_id")
     UUID accountId;
 
-    @JsonProperty("source_id")
-    UUID sourceId;
+    @JsonProperty("post_id")
+    UUID postId;
 
-    @JsonProperty("likes")
-    long like;
+    @JsonProperty("like_id")
+    UUID likeId;
 
-    public PostDto(Post post) {
-        new PostDto(post.getId(), post.getAccount().getId(), post.getSource(), post.getLikes());
-    }
 }

@@ -24,7 +24,7 @@ public class Post extends BaseEntity {
 
     @Column UUID source;
 
-    @Column int likes;
+    @Column long likes;
 
     @ManyToOne
     @JoinColumn(name = "account_id")

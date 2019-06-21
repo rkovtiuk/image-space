@@ -1,19 +1,15 @@
 package com.imagespace.core.web.controller;
 
-import com.imagespace.core.domain.entity.Account;
-import com.imagespace.core.domain.entity.Post;
-import com.imagespace.core.domain.service.AccountService;
 import com.imagespace.core.domain.service.PostService;
+import com.imagespace.core.web.dto.LikeDto;
 import com.imagespace.core.web.dto.PostDto;
-import com.imagespace.core.web.exception.HttpExceptionBuilder;
-import com.imagespace.core.web.exception.NotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -23,28 +19,33 @@ import java.util.Optional;
 public class PostController {
 
     PostService postService;
-    AccountService accountService;
 
     @PostMapping
-    public PostDto createPost(@RequestBody PostDto post) {
-        log.info("Creating a post for account {}", post.getAccountId());
-        Post createdPost = postService.createPost(post);
-        return new PostDto(createdPost.getId(), createdPost.getAccount().getId(), createdPost.getSource(), createdPost.getLikes());
+    public PostDto createPost(@RequestBody PostDto dto) {
+        log.info("Creating a post for account {}", dto.getAccountId());
+        return new PostDto(postService.createPost(dto));
     }
 
     @PutMapping
-    public PostDto updatePost(@RequestBody PostDto post) {
-        log.info("Update a post {} for account {}", post.getId(), post.getAccountId());
-        return Optional.ofNullable(postService.updatePost(post))
-                .map(entity -> new PostDto(entity.getId(), entity.getAccount().getId(), entity.getSource(), entity.getLikes()))
-                .orElseThrow(() -> HttpExceptionBuilder.notFound("Can't find post in this account"));
-
+    public PostDto updatePost(@RequestBody PostDto dto) {
+        log.info("Update a post {} for account {}", dto.getId(), dto.getAccountId());
+        return new PostDto(postService.updatePost(dto));
     }
 
     @DeleteMapping
-    public void deltePost(@RequestBody PostDto post) {
-        log.info("Deleting a post {} in account {}", post.getId(), post.getAccountId());
-        postService.deletePost(post);
+    public void deletePost(@RequestBody PostDto dto) {
+        log.info("Deleting a post {} for account {}", dto.getId(), dto.getAccountId());
+        postService.deletePost(dto);
+    }
+
+    @PostMapping("/{postId}/like")
+    public void like(@PathVariable UUID postId, @RequestBody LikeDto dto) {
+        postService.likePost(postId, dto);
+    }
+
+    @DeleteMapping("/{postId}/like")
+    public void dislike(@PathVariable UUID postId, @RequestBody LikeDto dto) {
+        postService.dislikePost(postId, dto);
     }
 
 }
