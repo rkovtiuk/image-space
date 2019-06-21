@@ -5,9 +5,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.AccessType;
 
 import javax.persistence.*;
 import java.util.UUID;
+
+import static org.springframework.data.annotation.AccessType.Type.PROPERTY;
 
 @Entity
 @Table(name = "like")
@@ -17,9 +20,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 public class Like {
 
-
-    @Id
-    UUID id;
+    @Id @AccessType(PROPERTY) UUID id;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
