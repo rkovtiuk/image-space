@@ -1,6 +1,5 @@
 package com.imagespace.core.domain.service;
 
-import com.imagespace.core.domain.entity.Account;
 import com.imagespace.core.domain.entity.Role;
 import com.imagespace.core.domain.repositories.RoleRepository;
 import lombok.RequiredArgsConstructor;

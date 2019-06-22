@@ -186,3 +186,31 @@ databaseChangeLog:
                       nullable: false
                       foreignKeyName: fk_like_account_id
                       references: account(id)
+
+  - changeSet:
+      id: 6
+        author: rkovtiuk
+        changes:
+          - createTable:
+              tableName: subscribe
+              columns:
+                - column:
+                    name: id
+                    type: varchar(36)
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+                - column:
+                    name: subscriber_id
+                    type: varchar(55)
+                    constraints:
+                      nullable: false
+                      foreignKeyName: fk_subscriber_account_id
+                      references: account(id)
+                - column:
+                    name: subscribing_id
+                    type: varchar(55)
+                    constraints:
+                      nullable: false
+                      foreignKeyName: fk_subscribing_account_id
+                      references: account(id)

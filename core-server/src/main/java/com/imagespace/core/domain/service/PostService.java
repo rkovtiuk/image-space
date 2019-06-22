@@ -39,7 +39,7 @@ public class PostService {
         return findPostForAccount(dto)
                 .map(post -> post.setSource(dto.getSourceId()))
                 .map(postRepository::save)
-                .orElse(null);
+                .orElseThrow(() -> HttpExceptionBuilder.notFound("Can't find post in this account"));
     }
 
     @Transactional
