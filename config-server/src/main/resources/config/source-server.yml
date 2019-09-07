@@ -2,6 +2,16 @@ server:
   port: 8040
 
 spring:
+  application:
+    name: source-server
+
+  data:
+    mongodb:
+      database: image-space-source-storage
+      host: localhost
+      port: 27017
+      username: mongodb
+
   kafka:
     consumer:
       group-id: img-events

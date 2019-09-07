@@ -7,8 +7,8 @@ import lombok.experimental.FieldDefaults;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"id"})
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ImageDto {
 
     @JsonProperty String id;

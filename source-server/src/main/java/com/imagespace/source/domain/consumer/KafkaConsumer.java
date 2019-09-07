@@ -1,6 +1,6 @@
 package com.imagespace.source.domain.consumer;
 
-import com.imagespace.source.domain.service.ImageService;
+import com.imagespace.source.domain.handler.ImageHandler;
 import com.imagespace.source.dto.ImageDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class KafkaConsumer {
 
-    ImageService imageService;
+    ImageHandler imageHandler;
 
     @KafkaListener(
             topics = "${kafka-properties.img-topic-name}",
@@ -30,7 +30,7 @@ public class KafkaConsumer {
         log.info("Logger 1 [JSON] received key {}: Type [{}] | Payload: {} | Record: {}",
                 cr.key(), typeIdHeader(cr.headers()), payload, cr.toString());
 
-        imageService.saveImage(payload);
+        imageHandler.save(payload);
     }
 
     private static String typeIdHeader(Headers headers) {

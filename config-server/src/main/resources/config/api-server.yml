@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: api-server
+
   kafka:
     # change this property if you are using your own
     # Kafka cluster or your Docker IP is different
