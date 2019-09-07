@@ -93,6 +93,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
         <!--//-->
         <!--need to avoid 'java.lang.TypeNotPresentException:
         Type javax.xml.bind.JAXBContext not present' if run on jdk 11-->
