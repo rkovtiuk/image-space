@@ -1,9 +1,7 @@
 package com.imagespace.api.domain.client;
 
-import com.imagespace.api.domain.dto.AccountDto;
-import com.imagespace.api.domain.dto.RoleDto;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.imagespace.api.dto.AccountDto;
+import com.imagespace.api.dto.RoleDto;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

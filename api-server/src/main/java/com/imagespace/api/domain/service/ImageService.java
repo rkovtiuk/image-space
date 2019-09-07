@@ -1,40 +1,31 @@
 package com.imagespace.api.domain.service;
 
-import com.imagespace.api.config.producer.ProducerConfiguration;
-import com.imagespace.api.domain.dto.ImageEventDto;
-import com.imagespace.api.domain.listener.ImageEventListener;
+import com.imagespace.api.domain.producer.KafkaProducer;
+import com.imagespace.api.dto.ImageEventDto;
 import lombok.AccessLevel;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.UUID;
 
-@Data
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ImageService {
 
-    ProducerConfiguration producerConfiguration;
+    KafkaProducer kafkaProducer;
 
-    KafkaTemplate<String, ImageEventDto> template;
-
-    public void sendImageEventToQueue(ImageEventDto imgData) {
-        template
-            .send(
-                producerConfiguration.getTopicName(),
-                producerConfiguration.getMsgPerRequest(),
-                imgData)
-            .addCallback(new ImageEventListener());
-    }
-
+    // TODO: 07.09.19 remove this test method
     @PostConstruct
     public void init() {
-        sendImageEventToQueue(new ImageEventDto().setId("123").setSource("Arrau".getBytes()));
-        sendImageEventToQueue(new ImageEventDto().setId("435").setSource("Arrau".getBytes()));
+        ImageEventDto image = new ImageEventDto();
+        image.setId(UUID.randomUUID().toString());
+        image.setSource(UUID.randomUUID().toString().getBytes());
+        kafkaProducer.sendImageEvent(image);
     }
 
 }

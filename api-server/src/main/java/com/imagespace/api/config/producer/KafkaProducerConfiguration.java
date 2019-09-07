@@ -1,6 +1,6 @@
 package com.imagespace.api.config.producer;
 
-import com.imagespace.api.domain.dto.ImageEventDto;
+import com.imagespace.api.dto.ImageEventDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -22,10 +22,10 @@ import java.util.Map;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Configuration
-@ConfigurationProperties(prefix = "img-producer")
-public class ProducerConfiguration {
+@ConfigurationProperties(prefix = "kafka-properties")
+public class KafkaProducerConfiguration {
 
-    String topicName;
+    String imgTopicName;
 
     String msgPerRequest;
 
@@ -51,7 +51,7 @@ public class ProducerConfiguration {
 
     @Bean
     public NewTopic adviceTopic() {
-        return new NewTopic(topicName, 1, (short) 1);
+        return new NewTopic(imgTopicName, 1, (short) 1);
     }
 
 }

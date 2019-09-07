@@ -1,11 +1,10 @@
 package com.imagespace.api.domain.client;
 
-import com.imagespace.api.domain.dto.AccountDto;
-import com.imagespace.api.domain.dto.RoleDto;
+import com.imagespace.api.dto.AccountDto;
+import com.imagespace.api.dto.RoleDto;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

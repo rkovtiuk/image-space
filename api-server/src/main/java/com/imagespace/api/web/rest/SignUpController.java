@@ -1,6 +1,6 @@
 package com.imagespace.api.web.rest;
 
-import com.imagespace.api.domain.dto.AccountDto;
+import com.imagespace.api.dto.AccountDto;
 import com.imagespace.api.domain.service.AccountService;
 import com.imagespace.api.web.exception.BadRequestException;
 import com.imagespace.api.web.exception.NotFoundException;

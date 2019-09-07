@@ -1,4 +1,4 @@
-package com.imagespace.api.domain.dto;
+package com.imagespace.api.dto;
 
 import lombok.AccessLevel;
 import lombok.Data;

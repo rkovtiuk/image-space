@@ -1,7 +1,10 @@
 package com.imagespace.api.domain.service;
 
 import com.imagespace.api.domain.client.CoreClient;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,11 +15,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService implements UserDetailsService {
 
-    private final CoreClient coreClient;
+    CoreClient coreClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
