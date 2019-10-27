@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.reactive.TransactionalOperator;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -28,11 +29,11 @@ public class ImageHandler {
     ImageRepository imageRepository;
     TransactionalOperator transactionalOperator;
 
+    @Transactional
     public Mono<ImageDocument> save(ImageDto dto) {
         return this.imageRepository
             .save(new ImageDocument(dto.getId(), dto.getSource()))
-            .doOnSuccess(doc -> log.info("Image {} has been save.", doc.getId()))
-            .as(this.transactionalOperator::transactional);
+            .doOnSuccess(doc -> log.info("Image {} has been save.", doc.getId()));
     }
 
     public Mono<ServerResponse> one(ServerRequest request) {
