@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -26,16 +26,14 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 public class ImageHandler {
 
     ImageRepository imageRepository;
+    TransactionalOperator transactionalOperator;
 
-    public void save(ImageDto imageDto) {
-        var image = ImageDocument.builder()
-                .id(imageDto.getId())
-                .imageData(imageDto.getSource())
-                .createdAt(LocalDateTime.now())
-                .deleted(false)
-                .build();
+    public Flux<ImageDocument> save(ImageDto dto) {
+        Mono<ImageDocument> imageMono = imageRepository
+            .save(new ImageDocument(dto.getId(), dto.getSource()))
+            .doOnSuccess(doc -> log.info("Image {} has been save.", doc.getId()));
 
-        this.imageRepository.save(image).log().subscribe();
+        return transactionalOperator.execute(reactiveTransaction -> imageMono);
     }
 
     public Mono<ServerResponse> one(ServerRequest request) {

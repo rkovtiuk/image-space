@@ -12,6 +12,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 @Slf4j
@@ -30,7 +31,11 @@ public class KafkaConsumer {
         log.info("Logger 1 [JSON] received key {}: Type [{}] | Payload: {} | Record: {}",
                 cr.key(), typeIdHeader(cr.headers()), payload, cr.toString());
 
-        imageHandler.save(payload);
+        Optional
+            .ofNullable(payload)
+            .ifPresentOrElse(
+                imageHandler::save,
+                () -> log.error("Empty IMAGE payload in {} offset with key {}", cr.offset(), cr.key()));
     }
 
     private static String typeIdHeader(Headers headers) {
