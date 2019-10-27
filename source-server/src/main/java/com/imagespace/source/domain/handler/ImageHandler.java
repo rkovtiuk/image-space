@@ -28,12 +28,11 @@ public class ImageHandler {
     ImageRepository imageRepository;
     TransactionalOperator transactionalOperator;
 
-    public Flux<ImageDocument> save(ImageDto dto) {
-        Mono<ImageDocument> imageMono = imageRepository
+    public Mono<ImageDocument> save(ImageDto dto) {
+        return this.imageRepository
             .save(new ImageDocument(dto.getId(), dto.getSource()))
-            .doOnSuccess(doc -> log.info("Image {} has been save.", doc.getId()));
-
-        return transactionalOperator.execute(reactiveTransaction -> imageMono);
+            .doOnSuccess(doc -> log.info("Image {} has been save.", doc.getId()))
+            .as(this.transactionalOperator::transactional);
     }
 
     public Mono<ServerResponse> one(ServerRequest request) {
