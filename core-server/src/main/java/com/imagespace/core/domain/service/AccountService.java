@@ -8,6 +8,8 @@ import com.imagespace.core.web.dto.ExistsDto;
 import com.imagespace.core.web.dto.SubscribeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final SubscribeRepository subscribeRepository;
 
+    @Cacheable(value = "accounts", key = "#id")
     public Optional<Account> findAccountById(UUID id) {
         return accountRepository.findOneById(id);
     }
@@ -33,14 +36,18 @@ public class AccountService {
     }
 
     @Transactional
+    @CachePut(value = "accounts", key = "#id")
     public Account createAccount(UUID id, String password) {
+        log.debug("Creating account with id {}.", id);
         return accountRepository.save(
             new Account()
                 .setId(id)
                 .setPassword(password));
     }
 
+    @Cacheable(value = "accounts", key = "#id")
     public List<Account> getSubscribes(UUID accountId, Pageable pageable) {
+        log.debug("Search subscribes by account id {} and parameters {}.", accountId, pageable);
         return subscribeRepository
                 .findAllBySubscribingId(accountId, pageable)
                 .map(Subscribe::getSubscriber)
@@ -49,6 +56,7 @@ public class AccountService {
 
     @Transactional
     public void subscribe(UUID subscribingId, SubscribeDto dto) {
+        log.debug("Creating subscribe with id {} and data {}.", subscribingId, dto);
         subscribeRepository
                 .findFirstBySubscriberIdAndSubscribingId(dto.getSubscriber(), subscribingId)
                 .ifPresentOrElse(
@@ -58,6 +66,7 @@ public class AccountService {
 
     @Transactional
     public void unsubscribe(UUID subscribingId, SubscribeDto dto) {
+        log.debug("Removing subscribe with id {} and data {}.", subscribingId, dto);
         subscribeRepository
                 .findFirstBySubscriberIdAndSubscribingId(dto.getSubscriber(), subscribingId)
                 .ifPresent(subscribeRepository::delete);

@@ -5,5 +5,5 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 @Configuration
 @EnableSpringDataWebSupport
-public class PaginationConfiguration {
+public class PaginationConfig {
 }

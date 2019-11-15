@@ -30,12 +30,13 @@ public class PostService {
     @Transactional
     public Post createPost(PostDto dto) {
         var post = new Post(UUID.randomUUID(), dto.getSourceId(), STARTED_LIKES_COUNT, new Account().setId(dto.getAccountId()));
-        log.info("Creating a post {}", post.getId());
+        log.debug("Creating a post {}", post.getId());
         return postRepository.save(post);
     }
 
     @Transactional
     public Post updatePost(PostDto dto) {
+        log.debug("Updating post with id {}", dto.getId());
         return findPostForAccount(dto)
                 .map(post -> post.setSource(dto.getSourceId()))
                 .map(postRepository::save)
@@ -44,16 +45,17 @@ public class PostService {
 
     @Transactional
     public void deletePost(PostDto dto) {
+        log.debug("Deleting a post {} in account {}", dto.getId(), dto.getAccountId());
         var post = findPostForAccount(dto)
                 .orElseThrow(() -> HttpExceptionBuilder.notFound("Can't find post in this account"));
 
-        log.info("Deleting a post {} in account {}", dto.getId(), dto.getAccountId());
         likeService.deletePostLikes(post);
         postRepository.delete(post);
     }
 
     @Transactional
     public void likePost(UUID postId, LikeDto dto) {
+        log.debug("Adding like from post {} and updating count of likes", postId);
         postRepository
                 .findById(postId)
                 .ifPresent(post -> {
@@ -64,6 +66,7 @@ public class PostService {
 
     @Transactional
     public void dislikePost(UUID postId, LikeDto dto) {
+        log.debug("Removing like from post {} and updating count of likes", postId);
         postRepository
                 .findById(postId)
                 .ifPresent(post -> {
