@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Document(collection = "images")
 @FieldDefaults(level = AccessLevel.PRIVATE)
