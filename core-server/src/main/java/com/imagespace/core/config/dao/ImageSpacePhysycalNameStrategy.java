@@ -4,6 +4,8 @@ import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 
+import java.util.Optional;
+
 public class ImageSpacePhysycalNameStrategy implements PhysicalNamingStrategy {
 
     @Override
@@ -34,10 +36,12 @@ public class ImageSpacePhysycalNameStrategy implements PhysicalNamingStrategy {
     private Identifier convertToSnakeCase(final Identifier identifier) {
         final String regex = "([a-z])([A-Z])";
         final String replacement = "$1_$2";
-        final String newName = identifier.getText()
-                .replaceAll(regex, replacement)
-                .toLowerCase();
-        return Identifier.toIdentifier(newName);
+        return Optional.ofNullable(identifier)
+                .map(Identifier::getText)
+                .map(text -> text.replaceAll(regex, replacement))
+                .map(String::toLowerCase)
+                .map(Identifier::toIdentifier)
+                .orElse(null);
     }
 
 }

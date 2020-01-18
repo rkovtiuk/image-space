@@ -8,6 +8,7 @@ import com.imagespace.core.web.dto.ExistsDto;
 import com.imagespace.core.web.dto.SubscribeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AccountService {
 
     private final AccountRepository accountRepository;
