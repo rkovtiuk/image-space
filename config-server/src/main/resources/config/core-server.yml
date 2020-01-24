@@ -9,7 +9,7 @@ spring:
     show-sql: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/imagespacedb?serverTimezone=Europe/Kiev
+    url: jdbc:postgresql://localhost:5432/imagespacedb #postgres
     username: root
     password: root
 
