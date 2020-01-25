@@ -1,7 +1,7 @@
-package com.imagespace.source.domain.consumer;
+package com.imagespace.source.domain.service;
 
-import com.imagespace.source.domain.handler.ImageHandler;
-import com.imagespace.source.dto.ImageDto;
+import com.imagespace.source.domain.handler.SourceHandler;
+import com.imagespace.source.dto.EventDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,22 +19,22 @@ import java.util.stream.StreamSupport;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class KafkaConsumer {
+public class ConsumerService {
 
-    ImageHandler imageHandler;
+    SourceHandler imageHandler;
 
     @KafkaListener(
-            topics = "${kafka-properties.img-topic-name}",
+            topics = "${kafka-properties.source-topic-name}",
             clientIdPrefix = "json",
             containerFactory = "kafkaListenerContainerFactory")
-    public void listenAsObject(ConsumerRecord<String, ImageDto> cr, @Payload ImageDto payload) {
-        log.info("Logger 1 [JSON] received key {}: Type [{}] | Payload: {} | Record: {}",
+    public void listenAsObject(ConsumerRecord<String, EventDto> cr, @Payload EventDto payload) {
+        log.info("Start consuming msg, received key {}: Type [{}] | Payload: {} | Record: {}",
                 cr.key(), typeIdHeader(cr.headers()), payload, cr.toString());
 
         Optional
             .ofNullable(payload)
             .ifPresentOrElse(
-                imageHandler::save,
+                eventDto -> imageHandler.save(eventDto.getBody()),
                 () -> log.error("Empty IMAGE payload in {} offset with key {}", cr.offset(), cr.key()));
     }
 

@@ -15,15 +15,15 @@ spring:
 
   kafka:
     consumer:
-      group-id: img-events
+      group-id: post-server
       auto-offset-reset: none
     # change this property if you are using your own
     # Kafka cluster or your Docker IP is different
     bootstrap-servers: localhost:9092
 
 kafka-properties:
-  post-topic-name: post-event-topic
-  like-topic-name: like-event-topic
+  post-topic-name: post-topic
+  like-topic-name: like-topic
   msg-per-request: 1
 
 cache:

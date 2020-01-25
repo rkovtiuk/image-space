@@ -29,7 +29,8 @@ public class PostService {
 
     @PostConstruct
     public void init() {
-        createPost(UUID.randomUUID(), UUID.randomUUID().toString().getBytes());
+        var random = UUID.randomUUID();
+        createPost(random, random.toString().getBytes());
     }
 
 }

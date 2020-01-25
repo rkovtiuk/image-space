@@ -1,6 +1,6 @@
 package com.imagespace.source.config.web;
 
-import com.imagespace.source.domain.handler.ImageHandler;
+import com.imagespace.source.domain.handler.SourceHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -15,10 +15,10 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 public class RouteConfiguration {
 
     @Bean
-    public RouterFunction<ServerResponse> imageRoutes(ImageHandler handler) {
+    public RouterFunction<ServerResponse> sourceRoutes(SourceHandler handler) {
         return RouterFunctions
-            .route(GET("/images/{id}").and(accept(APPLICATION_JSON)), handler::one)
-            .andRoute(GET("/images").and(accept(APPLICATION_JSON)), handler::all);
+            .route(GET("/source/{id}").and(accept(APPLICATION_JSON)), handler::one)
+            .andRoute(GET("/sources").and(accept(APPLICATION_JSON)), handler::all);
     }
 
 }

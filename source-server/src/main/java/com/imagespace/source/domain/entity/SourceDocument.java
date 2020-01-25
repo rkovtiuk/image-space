@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of = "id")
 @Document(collection = "images")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ImageDocument {
+public class SourceDocument {
 
     @Id
     String id;
@@ -29,7 +29,7 @@ public class ImageDocument {
     @Field("deleted")
     boolean deleted;
 
-    public ImageDocument(String id, byte[] imageData) {
+    public SourceDocument(String id, byte[] imageData) {
         this.id = id;
         this.imageData = imageData;
         this.createdAt = LocalDateTime.now();

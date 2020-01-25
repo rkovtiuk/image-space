@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @EqualsAndHashCode(of = {"id"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ImageDto {
+public class SourceDto {
 
     @JsonProperty String id;
 

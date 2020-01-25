@@ -1,5 +1,5 @@
 server:
-  port: 8040
+  port: 8083
 
 spring:
   application:
@@ -14,14 +14,15 @@ spring:
 
   kafka:
     consumer:
-      group-id: img-events
+      group-id: source-server
       auto-offset-reset: none
     # change this property if you are using your own
     # Kafka cluster or your Docker IP is different
     bootstrap-servers: localhost:9092
 
 kafka-properties:
-  img-topic-name: img-event-topic
+  source-topic-name: source-topic
+  create-source-event-name: create-source-event
   msg-per-request: 1
 
 feign:

@@ -1,6 +1,6 @@
-package com.imagespace.post.domain.queue;
+package com.imagespace.post.domain.kafka;
 
-import com.imagespace.post.common.dto.PostDto;
+import com.imagespace.post.common.dto.EventDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +23,7 @@ public class KafkaConsumer {
             topics = "${kafka-properties.post-topic-name}",
             clientIdPrefix = "json",
             containerFactory = "kafkaListenerContainerFactory")
-    public void listenAsObject(ConsumerRecord<String, PostDto> cr, @Payload PostDto payload) {
+    public void consumeEvents(ConsumerRecord<String, EventDto> cr, @Payload EventDto payload) {
         log.info("Kafka consumer received key {}: Type [{}] | Payload: {} | Record: {}",
                 cr.key(), typeIdHeader(cr.headers()), payload, cr.toString());
     }

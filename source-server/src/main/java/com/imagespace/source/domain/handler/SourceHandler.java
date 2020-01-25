@@ -1,8 +1,8 @@
 package com.imagespace.source.domain.handler;
 
-import com.imagespace.source.domain.entity.ImageDocument;
-import com.imagespace.source.domain.repository.ImageRepository;
-import com.imagespace.source.dto.ImageDto;
+import com.imagespace.source.domain.entity.SourceDocument;
+import com.imagespace.source.domain.repository.SourceRepository;
+import com.imagespace.source.dto.SourceDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,20 +24,20 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ImageHandler {
+public class SourceHandler {
 
-    ImageRepository imageRepository;
+    SourceRepository sourceRepository;
     TransactionalOperator transactionalOperator;
 
     @Transactional
-    public Mono<ImageDocument> save(ImageDto dto) {
-        return this.imageRepository
-            .save(new ImageDocument(dto.getId(), dto.getSource()))
+    public Mono<SourceDocument> save(SourceDto dto) {
+        return this.sourceRepository
+            .save(new SourceDocument(dto.getId(), dto.getSource()))
             .doOnSuccess(doc -> log.info("Image {} has been save.", doc.getId()));
     }
 
     public Mono<ServerResponse> one(ServerRequest request) {
-        return this.imageRepository.findById(request.pathVariable("id"))
+        return this.sourceRepository.findById(request.pathVariable("id"))
             .flatMap(image -> ServerResponse.ok().contentType(APPLICATION_JSON).body(fromObject(image)))
             .switchIfEmpty(ServerResponse.notFound().build());
     }
@@ -45,9 +45,9 @@ public class ImageHandler {
     public Mono<ServerResponse> all(ServerRequest request) {
         return request.queryParam("ids")
                 .map(ids -> Arrays.asList(ids.split(",")))
-                .map(this.imageRepository::findAllByIdIn)
-                .map(images -> ServerResponse.ok().contentType(APPLICATION_JSON).body(images, ImageDocument.class))
-                .orElse(ServerResponse.ok().contentType(APPLICATION_JSON).body(Flux.empty(), ImageDocument.class));
+                .map(this.sourceRepository::findAllByIdIn)
+                .map(images -> ServerResponse.ok().contentType(APPLICATION_JSON).body(images, SourceDocument.class))
+                .orElse(ServerResponse.ok().contentType(APPLICATION_JSON).body(Flux.empty(), SourceDocument.class));
     }
 
 }
