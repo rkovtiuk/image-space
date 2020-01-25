@@ -1,6 +1,6 @@
 package com.imagespace.api.config.producer;
 
-import com.imagespace.api.dto.ImageEventDto;
+import com.imagespace.api.dto.EventDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -25,7 +25,12 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "kafka-properties")
 public class KafkaProducerConfiguration {
 
-    String imgTopicName;
+    String postTopicName;
+    String likeTopicName;
+    String sourceTopicName;
+
+    String createPostEventName;
+    String createSourceEventName;
 
     String msgPerRequest;
 
@@ -40,18 +45,23 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, ImageEventDto> producerFactory() {
+    public ProducerFactory<String, EventDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, ImageEventDto> kafkaTemplate() {
+    public KafkaTemplate<String, EventDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
-    public NewTopic adviceTopic() {
-        return new NewTopic(imgTopicName, 1, (short) 1);
+    public NewTopic sourceTopic() {
+        return new NewTopic(sourceTopicName, 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic postTopic() {
+        return new NewTopic(postTopicName, 1, (short) 1);
     }
 
 }

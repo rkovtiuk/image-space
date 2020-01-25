@@ -11,7 +11,11 @@ spring:
     bootstrap-servers: localhost:9092
 
 kafka-properties:
-  img-topic-name: img-event-topic
+  post-topic-name: post-topic
+  like-topic-name: like-topic
+  source-topic-name: source-topic
+  create-post-event-name: create-post-event
+  create-source-event-name: create-source-event
   msg-per-request: 1
 
 feign:
