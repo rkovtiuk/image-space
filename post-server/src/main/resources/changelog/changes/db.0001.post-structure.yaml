@@ -1,0 +1,42 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: rkovtiuk
+      changes:
+        - createTable:
+            tableName: post
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: source
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: likes
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
