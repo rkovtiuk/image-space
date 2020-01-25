@@ -1,0 +1,27 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 2
+      author: rkovtiuk
+      changes:
+        - createTable:
+            tableName: like
+            columns:
+              - column:
+                  name: id
+                  type: varchar(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: post_id
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_like_post_id
+                    references: post(id)
+              - column:
+                  name: account_id
+                  type: varchar(55)
+                  constraints:
+                    nullable: false
