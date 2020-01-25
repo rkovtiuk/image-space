@@ -1,6 +1,7 @@
 package com.imagespace.post.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.imagespace.post.domain.entity.Post;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,5 +34,14 @@ public class PostDto {
 
     @JsonProperty("updated_at")
     LocalDateTime updatedAt;
+
+    public PostDto(Post post) {
+        this.id = post.getId();
+        this.accountId = post.getAccountId();
+        this.sourceId = post.getSource();
+        this.likes = post.getLikes();
+        this.createdAt = post.getCreatedAt();
+        this.updatedAt = post.getUpdatedAt();
+    }
 
 }
