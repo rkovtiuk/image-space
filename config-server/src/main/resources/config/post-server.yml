@@ -13,6 +13,19 @@ spring:
     username: root
     password: root
 
+  kafka:
+    consumer:
+      group-id: img-events
+      auto-offset-reset: none
+    # change this property if you are using your own
+    # Kafka cluster or your Docker IP is different
+    bootstrap-servers: localhost:9092
+
+kafka-properties:
+  post-topic-name: post-event-topic
+  like-topic-name: like-event-topic
+  msg-per-request: 1
+
 cache:
   duration: 10 # minutes
 
