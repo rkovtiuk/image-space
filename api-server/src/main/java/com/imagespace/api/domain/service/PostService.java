@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.UUID;
 
 @Slf4j
@@ -25,12 +24,6 @@ public class PostService {
 
         var post = new PostDto(postId, accountId, sourceId);
         imageService.savePostSource(sourceId, sourceData, () -> kafkaProducer.sendCreatePostEvent(post));
-    }
-
-    @PostConstruct
-    public void init() {
-        var random = UUID.randomUUID();
-        createPost(random, random.toString().getBytes());
     }
 
 }

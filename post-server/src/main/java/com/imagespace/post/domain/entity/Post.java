@@ -41,4 +41,7 @@ public class Post implements Serializable {
     @LastModifiedDate
     LocalDateTime updatedAt;
 
+    public Post(UUID id) {
+        this.id = id;
+    }
 }

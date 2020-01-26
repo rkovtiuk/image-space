@@ -12,3 +12,4 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+#      KAFKA_CREATE_TOPICS: "post-topic:1:1,like-topic:1:1,source-topic:1:1"

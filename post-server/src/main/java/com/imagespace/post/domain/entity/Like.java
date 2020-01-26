@@ -19,6 +19,9 @@ import static org.springframework.data.annotation.AccessType.Type.PROPERTY;
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
+@NamedEntityGraph(name = "Like.post",
+        attributeNodes = @NamedAttributeNode("post")
+)
 public class Like implements Serializable {
 
     @Id

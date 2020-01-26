@@ -1,4 +1,4 @@
-package com.imagespace.post.domain.kafka;
+package com.imagespace.post.domain.service;
 
 import com.imagespace.post.common.dto.EventDto;
 import lombok.AccessLevel;
@@ -17,12 +17,9 @@ import java.util.stream.StreamSupport;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class KafkaConsumer {
+public class ConsumerService {
 
-    @KafkaListener(
-            topics = "${kafka-properties.post-topic-name}",
-            clientIdPrefix = "json",
-            containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "${kafka-properties.post-topic-name}")
     public void consumeEvents(ConsumerRecord<String, EventDto> cr, @Payload EventDto payload) {
         log.info("Kafka consumer received key {}: Type [{}] | Payload: {} | Record: {}",
                 cr.key(), typeIdHeader(cr.headers()), payload, cr.toString());
