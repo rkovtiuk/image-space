@@ -9,10 +9,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,8 +35,9 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
-    public Page<Post> getAccountPosts(UUID accountId, Pageable page) {
-        return postRepository.findAllByAccountId(accountId, page);
+    public Page<Post> getAccountPosts(List<UUID> accountId, Pageable pageable) {
+        var page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "createdAt"));
+        return postRepository.findAllByAccountIdIn(accountId, page);
     }
 
     public long getCountOfPostLikes(UUID postId) {

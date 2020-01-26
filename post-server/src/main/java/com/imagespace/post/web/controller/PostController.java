@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -25,9 +26,9 @@ public class PostController {
     PostService postService;
 
     @GetMapping
-    public Page<PostDto> getAccountPosts(@RequestParam UUID account, Pageable page) {
-        log.info("Getting posts from account {} with params: {}", account, page);
-        return postService.getAccountPosts(account, page).map(PostDto::new);
+    public Page<PostDto> getAccountPosts(@RequestParam List<UUID> accounts, Pageable page) {
+        log.info("Getting posts from account {} with params: {}", accounts, page);
+        return postService.getAccountPosts(accounts, page).map(PostDto::new);
     }
 
     @GetMapping("/{id}")
@@ -40,21 +41,25 @@ public class PostController {
 
     @PostMapping("/{id}/likes")
     public void putLike(@PathVariable UUID id, @RequestBody LikeDto like) {
+        log.info("Put like from account {} to post {}", like.getAccountId(), id);
         postService.addLikeToPost(id, like.getAccountId());
     }
 
     @DeleteMapping("/{id}/likes")
     public void removeLike(@PathVariable UUID id, @RequestBody LikeDto like) {
+        log.info("Remove like from account {} to post {}", like.getAccountId(), id);
         postService.removeLikeFromPost(id, like.getAccountId());
     }
 
     @GetMapping("/{id}/likes")
     public Page<LikeDto> getLikesFromPost(@PathVariable UUID id, Pageable page) {
+        log.info("Get all like from post {} with params: {}", id, page);
         return postService.getPostLikes(id, page).map(LikeDto::new);
     }
 
     @GetMapping("/{id}/count")
     public long getCountOfLikesFromPost(@PathVariable UUID id) {
+        log.info("Get count of likes from post {}", id);
         return postService.getCountOfPostLikes(id);
     }
 
