@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -20,7 +21,7 @@ public class RoleController {
     RoleService roleService;
 
     @GetMapping("/roles/{accountId}")
-    public List<Role> findAllUserRoles(@PathVariable String accountId) {
+    public List<Role> findAllUserRoles(@PathVariable UUID accountId) {
         return roleService.findAllByAccount(accountId);
     }
 

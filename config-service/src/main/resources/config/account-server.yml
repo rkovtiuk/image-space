@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: core-service
+    name: account-service
 
   jpa:
     show-sql: true

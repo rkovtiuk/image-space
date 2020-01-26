@@ -19,7 +19,9 @@ import java.util.stream.StreamSupport;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsumerService {
 
-    @KafkaListener(topics = "${kafka-properties.post-topic-name}")
+    @KafkaListener(
+        topics = "${kafka-properties.post-topic-name}",
+        groupId = "${spring.kafka.consumer.group-id}")
     public void consumeEvents(ConsumerRecord<String, EventDto> cr, @Payload EventDto payload) {
         log.info("Kafka consumer received key {}: Type [{}] | Payload: {} | Record: {}",
                 cr.key(), typeIdHeader(cr.headers()), payload, cr.toString());

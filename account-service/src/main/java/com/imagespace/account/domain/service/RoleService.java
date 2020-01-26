@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -16,7 +17,7 @@ public class RoleService {
     private final RoleRepository roleRepository;
 
     @Cacheable("roles")
-    public List<Role> findAllByAccount(String accountId) {
+    public List<Role> findAllByAccount(UUID accountId) {
         return roleRepository.findAllByAccount_Id(accountId);
     }
 }
