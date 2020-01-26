@@ -23,6 +23,7 @@ spring:
 kafka-properties:
   source-topic-name: source-topic
   create-source-event-name: create-source-event
+  delete-source-event-name: delete-source-event
   msg-per-request: 1
 
 feign:

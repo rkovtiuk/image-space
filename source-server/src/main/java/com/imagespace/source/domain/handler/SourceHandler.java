@@ -2,7 +2,6 @@ package com.imagespace.source.domain.handler;
 
 import com.imagespace.source.domain.entity.SourceDocument;
 import com.imagespace.source.domain.repository.SourceRepository;
-import com.imagespace.source.dto.SourceDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,10 +29,21 @@ public class SourceHandler {
     TransactionalOperator transactionalOperator;
 
     @Transactional
-    public Mono<SourceDocument> save(SourceDto dto) {
+    public Mono<SourceDocument> save(String sourceId, byte[] sourceData) {
         return this.sourceRepository
-            .save(new SourceDocument(dto.getId(), dto.getSource()))
-            .doOnSuccess(doc -> log.info("Image {} has been save.", doc.getId()));
+            .save(new SourceDocument(sourceId, sourceData))
+            .doOnSuccess(doc -> log.info("Image {} has been saved.", sourceId));
+    }
+
+    @Transactional
+    public Mono<SourceDocument> delete(String sourceId) {
+        return this.sourceRepository
+            .findById(sourceId)
+            .map(source -> {
+                source.setDeleted(true);
+                sourceRepository.save(source);
+                return source;
+            }).doOnSuccess(doc -> log.info("Source {} has been deleted.", sourceId));
     }
 
     public Mono<ServerResponse> one(ServerRequest request) {
