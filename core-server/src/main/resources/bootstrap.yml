@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: core-server
-  cloud:
-    config:
-      fail-fast: true

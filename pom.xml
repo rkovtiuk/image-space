@@ -11,10 +11,10 @@
     <modules>
         <module>config-service</module>
         <module>discover-service</module>
-        <module>core-server</module>
-        <module>api-service</module>
+        <module>account-service</module>
         <module>source-service</module>
         <module>post-service</module>
+        <module>api-service</module>
     </modules>
 
 </project>
