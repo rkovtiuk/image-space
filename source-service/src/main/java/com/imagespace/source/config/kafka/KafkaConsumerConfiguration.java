@@ -4,7 +4,6 @@ import lombok.Data;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -16,11 +15,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 @Data
 @EnableKafka
 @Configuration
-@ConfigurationProperties(prefix = "kafka-properties")
 public class KafkaConsumerConfiguration {
-
-    private String createSourceEventName;
-    private String deleteSourceEventName;
 
     @Autowired
     private KafkaProperties kafkaProperties;

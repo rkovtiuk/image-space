@@ -1,6 +1,6 @@
 package com.imagespace.source.domain.service;
 
-import com.imagespace.source.config.kafka.KafkaConsumerConfiguration;
+import com.imagespace.source.config.kafka.KafkaEventProperties;
 import com.imagespace.source.domain.handler.SourceHandler;
 import com.imagespace.source.dto.EventDto;
 import lombok.AccessLevel;
@@ -26,7 +26,7 @@ public class ConsumerService {
     String EMPTY_EVENT_NAME = "";
 
     SourceHandler imageHandler;
-    KafkaConsumerConfiguration consumerConfig;
+    KafkaEventProperties eventProperties;
 
     @KafkaListener(topics = "${kafka-properties.source-topic-name}")
     public void listenAsObject(ConsumerRecord<String, EventDto> cr, @Payload EventDto payload) {
@@ -34,9 +34,9 @@ public class ConsumerService {
                 cr.key(), typeIdHeader(cr.headers()), payload, cr.toString());
 
         var eventName = Optional.ofNullable(payload).map(EventDto::getEventName).orElse(EMPTY_EVENT_NAME);
-        if (eventName.equals(consumerConfig.getCreateSourceEventName())) {
+        if (eventName.equals(eventProperties.getCreateSourceEventName())) {
             processCreatingSource(payload, cr.offset(), cr.key());
-        } else if (eventName.equals(consumerConfig.getDeleteSourceEventName())) {
+        } else if (eventName.equals(eventProperties.getDeleteSourceEventName())) {
             processDeletingSource(payload, cr.offset(), cr.key());
         } else if (eventName.equals(EMPTY_EVENT_NAME)) {
             log.warn("Msg in {} offset with key {} in source topic will be filtered out because of empty event name", cr.offset(), cr.key());

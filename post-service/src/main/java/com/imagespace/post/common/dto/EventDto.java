@@ -11,12 +11,12 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EventDto<T> {
+public class EventDto {
 
     @JsonProperty("event_name")
     String eventName;
 
     @JsonProperty("payload")
-    T body;
+    PostDto body;
 
 }

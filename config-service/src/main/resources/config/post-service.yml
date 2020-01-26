@@ -24,6 +24,8 @@ spring:
 kafka-properties:
   post-topic-name: post-topic
   like-topic-name: like-topic
+  create-post-event-name: create-post-event
+  delete-post-event-name: delete-post-event
   msg-per-request: 1
 
 cache:
