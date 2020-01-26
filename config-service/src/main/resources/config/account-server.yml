@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: core-server
+
+  jpa:
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/imagespace_account_db #postgres
+    username: root
+    password: root
+
+logging:
+  level:
+    org.springframework.web.reactive.function.server.RouterFunctions: DEBUG

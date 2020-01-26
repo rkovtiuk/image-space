@@ -9,12 +9,12 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>config-server</module>
-        <module>discover-server</module>
+        <module>config-service</module>
+        <module>discover-service</module>
         <module>core-server</module>
-        <module>api-server</module>
-        <module>source-server</module>
-        <module>post-server</module>
+        <module>api-service</module>
+        <module>source-service</module>
+        <module>post-service</module>
     </modules>
 
 </project>

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: source-service
+  cloud:
+    config:
+      fail-fast: true
