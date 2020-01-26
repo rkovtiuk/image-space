@@ -44,4 +44,12 @@ public class Post implements Serializable {
     public Post(UUID id) {
         this.id = id;
     }
+
+    public Post(UUID id, UUID source, long likes, UUID accountId) {
+        this.id = id;
+        this.source = source;
+        this.likes = likes;
+        this.accountId = accountId;
+    }
+
 }

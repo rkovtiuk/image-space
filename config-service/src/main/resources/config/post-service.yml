@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: post-server
+    name: post-service
 
   jpa:
     show-sql: true
@@ -15,8 +15,8 @@ spring:
 
   kafka:
     consumer:
-      group-id: post-server
-      auto-offset-reset: latest
+      group-id: post-service
+      auto-offset-reset: earliest
     # change this property if you are using your own
     # Kafka cluster or your Docker IP is different
     bootstrap-servers: localhost:9092

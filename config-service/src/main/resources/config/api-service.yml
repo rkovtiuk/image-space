@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: api-server
+    name: api-service
 
   kafka:
     # change this property if you are using your own

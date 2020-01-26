@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Document(collection = "images")
+@Document(collection = "sources")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SourceDocument {
 
