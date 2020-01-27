@@ -29,7 +29,7 @@ kafka-properties:
   msg-per-request: 1
 
 cache:
-  duration: 10 # minutes
+  duration: 1 # minutes
 
 logging:
   level:

@@ -39,7 +39,7 @@ hystrix:
 ribbon:
   eager-load:
     enabled: true
-    clients: core-service
+    clients: account-service
 
 logging:
   level:

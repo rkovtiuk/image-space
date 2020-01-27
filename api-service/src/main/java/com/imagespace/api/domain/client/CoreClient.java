@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import java.util.Optional;
 
-@RibbonClient("core-server")
-@FeignClient(value = "core-server", fallbackFactory = CoreFallbackFactory.class)
+@RibbonClient("account-service")
+@FeignClient(value = "account-service", fallbackFactory = CoreFallbackFactory.class)
 public interface CoreClient {
 
     // account
