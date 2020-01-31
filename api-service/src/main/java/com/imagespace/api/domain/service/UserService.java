@@ -1,6 +1,6 @@
 package com.imagespace.api.domain.service;
 
-import com.imagespace.api.domain.client.CoreClient;
+import com.imagespace.api.domain.client.AccountClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,17 +21,17 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService implements UserDetailsService {
 
-    CoreClient coreClient;
+    AccountClient accountClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return coreClient.findAccountById(username)
+        return accountClient.findAccountById(username)
             .map(account -> new User(username, account.getPassword(), getAuthority(account.getId())))
             .orElseThrow(() -> new UsernameNotFoundException("Invalid account"));
     }
 
     private List<SimpleGrantedAuthority> getAuthority(String accountId) {
-        return coreClient.findAllByAccount(accountId).stream()
+        return accountClient.findAllByAccount(accountId).stream()
             .map(role -> new SimpleGrantedAuthority(role.getName()))
             .collect(Collectors.toList());
     }

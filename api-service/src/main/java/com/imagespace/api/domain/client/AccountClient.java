@@ -1,7 +1,7 @@
 package com.imagespace.api.domain.client;
 
-import com.imagespace.api.dto.AccountDto;
-import com.imagespace.api.dto.RoleDto;
+import com.imagespace.api.common.dto.AccountDto;
+import com.imagespace.api.common.dto.RoleDto;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RibbonClient("account-service")
-@FeignClient(value = "account-service", fallbackFactory = CoreFallbackFactory.class)
-public interface CoreClient {
+@FeignClient(value = "account-service", fallbackFactory = AccountFallbackFactory.class)
+public interface AccountClient {
 
     // account
     @GetMapping("/accounts/{accountId}")

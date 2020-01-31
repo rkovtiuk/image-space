@@ -1,6 +1,6 @@
 package com.imagespace.api.config.producer;
 
-import com.imagespace.api.dto.EventDto;
+import com.imagespace.api.common.dto.EventDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;

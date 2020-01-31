@@ -1,9 +1,9 @@
 package com.imagespace.api.web.rest;
 
+import com.imagespace.api.common.dto.AccountDto;
+import com.imagespace.api.common.exception.BadRequestException;
+import com.imagespace.api.common.exception.NotFoundException;
 import com.imagespace.api.domain.service.AccountService;
-import com.imagespace.api.dto.AccountDto;
-import com.imagespace.api.web.exception.BadRequestException;
-import com.imagespace.api.web.exception.NotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.util.ObjectUtils.isEmpty;
+import static org.springframework.util.StringUtils.isEmpty;
 
 @Slf4j
 @RestController

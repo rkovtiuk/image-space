@@ -1,4 +1,4 @@
-package com.imagespace.api.dto;
+package com.imagespace.api.common.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

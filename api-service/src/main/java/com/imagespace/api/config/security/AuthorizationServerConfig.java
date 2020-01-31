@@ -1,6 +1,7 @@
 package com.imagespace.api.config.security;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Data
 @Configuration
 @EnableAuthorizationServer
+@EqualsAndHashCode(callSuper = true)
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     private final SecurityConfigProperties properties;

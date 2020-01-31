@@ -1,4 +1,4 @@
-package com.imagespace.api.web.exception;
+package com.imagespace.api.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,13 +1,14 @@
 package com.imagespace.api.domain.service;
 
+import com.imagespace.api.common.dto.EventDto;
+import com.imagespace.api.common.dto.PostDto;
+import com.imagespace.api.common.dto.SourceDto;
 import com.imagespace.api.config.producer.KafkaProducerConfiguration;
-import com.imagespace.api.dto.EventDto;
-import com.imagespace.api.dto.PostDto;
-import com.imagespace.api.dto.SourceDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProducerService {
 
