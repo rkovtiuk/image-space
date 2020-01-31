@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 0 # random port
 
 spring:
   application:
@@ -16,10 +16,10 @@ spring:
   kafka:
     consumer:
       group-id: post-service
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
     # change this property if you are using your own
     # Kafka cluster or your Docker IP is different
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 127.0.0.1:9092
 
 kafka-properties:
   post-topic-name: post-topic
