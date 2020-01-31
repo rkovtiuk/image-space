@@ -27,7 +27,6 @@ import static org.springframework.web.reactive.function.BodyInserters.fromObject
 public class SourceHandler {
 
     SourceRepository sourceRepository;
-    TransactionalOperator transactionalOperator;
 
     @Transactional
     public Mono<SourceDocument> save(String sourceId, byte[] sourceData) {

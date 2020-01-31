@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 import org.springframework.transaction.ReactiveTransactionManager;
 import org.springframework.transaction.reactive.TransactionalOperator;
-import org.springframework.transaction.support.TransactionOperations;
 
 @Configuration
 public class DatabaseConfiguration {
@@ -17,7 +16,7 @@ public class DatabaseConfiguration {
     }
 
     @Bean
-    public ReactiveTransactionManager transactionManager(ReactiveMongoDatabaseFactory factory) {
+    public ReactiveTransactionManager reactiveTransactionManager(ReactiveMongoDatabaseFactory factory) {
         return new ReactiveMongoTransactionManager(factory);
     }
 

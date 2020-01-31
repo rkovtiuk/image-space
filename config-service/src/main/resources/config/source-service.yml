@@ -16,6 +16,12 @@ spring:
     consumer:
       group-id: source-service
       auto-offset-reset: latest
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      properties:
+#        spring:
+#          json:
+#            trusted:
+#              packages: '*'
     # change this property if you are using your own
     # Kafka cluster or your Docker IP is different
     bootstrap-servers: 127.0.0.1:9092
