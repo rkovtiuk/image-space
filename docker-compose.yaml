@@ -1,20 +1,30 @@
 version: '2'
+
 services:
   zookeeper:
-    image: wurstmeister/zookeeper:latest
+    image: confluentinc/cp-zookeeper:latest
     ports:
       - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     extra_hosts:
+      - "moby:127.0.0.1"
       - "localhost: 127.0.0.1"
 
   kafka:
-    image: wurstmeister/kafka:latest
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka-host
     ports:
       - 9092:9092
+    depends_on:
+      - zookeeper
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-#      KAFKA_CREATE_TOPICS: "post-topic:1:1,source-topic:1:1"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     extra_hosts:
+      - "moby:127.0.0.1"
       - "localhost: 127.0.0.1"
