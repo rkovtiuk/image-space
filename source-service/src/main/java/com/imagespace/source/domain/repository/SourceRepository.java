@@ -10,6 +10,6 @@ import java.util.Collection;
 @Repository
 public interface SourceRepository extends ReactiveMongoRepository<SourceDocument, String> {
 
-    Flux<SourceDocument> findAllByIdIn(Collection<String> ids);
+    Flux<SourceDocument> findAllBySourceIdIn(Collection<String> ids);
 
 }

@@ -9,7 +9,6 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     extra_hosts:
-      - "moby:127.0.0.1"
       - "localhost: 127.0.0.1"
 
   kafka:
@@ -25,6 +24,6 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#      KAFKA_CREATE_TOPICS: "post-topic:1:1,source-topic:1:1,like-topic:1:1"
     extra_hosts:
-      - "moby:127.0.0.1"
       - "localhost: 127.0.0.1"

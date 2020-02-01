@@ -13,12 +13,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Document(collection = "sources")
+@Document(collection = "source")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SourceDocument {
 
     @Id
+    @Field("_id")
     String id;
+
+    @Field("source_id")
+    String sourceId;
 
     @Field("image_data")
     byte[] imageData;
@@ -29,8 +33,8 @@ public class SourceDocument {
     @Field("deleted")
     boolean deleted;
 
-    public SourceDocument(String id, byte[] imageData) {
-        this.id = id;
+    public SourceDocument(String sourceId, byte[] imageData) {
+        this.sourceId = sourceId;
         this.imageData = imageData;
         this.createdAt = LocalDateTime.now();
     }

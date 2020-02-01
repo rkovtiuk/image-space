@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.reactive.TransactionalOperator;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
@@ -18,7 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
+import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 
 @Slf4j
 @Service
@@ -48,16 +47,16 @@ public class SourceHandler {
 
     public Mono<ServerResponse> one(ServerRequest request) {
         return this.sourceRepository.findById(request.pathVariable("id"))
-            .flatMap(image -> ServerResponse.ok().contentType(APPLICATION_JSON).body(fromObject(image)))
+            .flatMap(image -> ServerResponse.ok().contentType(APPLICATION_JSON).body(fromValue(image)))
             .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     public Mono<ServerResponse> all(ServerRequest request) {
         return request.queryParam("ids")
-                .map(ids -> Arrays.asList(ids.split(",")))
-                .map(this.sourceRepository::findAllByIdIn)
-                .map(images -> ServerResponse.ok().contentType(APPLICATION_JSON).body(images, SourceDocument.class))
-                .orElse(ServerResponse.ok().contentType(APPLICATION_JSON).body(Flux.empty(), SourceDocument.class));
+            .map(ids -> Arrays.asList(ids.split(",")))
+            .map(this.sourceRepository::findAllBySourceIdIn)
+            .map(images -> ServerResponse.ok().contentType(APPLICATION_JSON).body(images, SourceDocument.class))
+            .orElse(ServerResponse.ok().contentType(APPLICATION_JSON).body(Flux.empty(), SourceDocument.class));
     }
 
 }

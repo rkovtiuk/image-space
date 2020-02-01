@@ -2,7 +2,7 @@ package com.imagespace.source.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.imagespace.source.config.kafka.KafkaEventProperties;
+import com.imagespace.source.config.kafka.KafkaConfig;
 import com.imagespace.source.domain.handler.SourceHandler;
 import com.imagespace.source.dto.EventDto;
 import lombok.AccessLevel;
@@ -28,7 +28,7 @@ public class ConsumerService {
 
     ObjectMapper objectMapper;
     SourceHandler sourceHandler;
-    KafkaEventProperties eventProperties;
+    KafkaConfig eventProperties;
 
     @KafkaListener(topics = "${kafka-properties.source-topic-name}", groupId = "${spring.kafka.consumer.group-id}")
     public void listenAsObject(ConsumerRecord<String, String> cr) throws JsonProcessingException {
@@ -48,14 +48,18 @@ public class ConsumerService {
     private void processCreatingSource(EventDto payload, long offset, String key) {
         log.info("Start creating source from kafka msg in {} offset with key {}", offset, key);
         ofNullable(payload).map(EventDto::getBody).ifPresentOrElse(
-            sourceDto -> sourceHandler.save(sourceDto.getId(), sourceDto.getSource()),
+            sourceDto -> sourceHandler
+                .save(sourceDto.getId(), sourceDto.getSource())
+                .subscribe(sourceDocument -> log.info("Kafka msg in {} offset with key {} had been successfully processed.", offset, key)),
             () -> log.error("Empty Source payload in {} offset with key {}", offset, key));
     }
 
     private void processDeletingSource(EventDto payload, long offset, String key) {
         log.info("Start removing source from kafka msg in {} offset with key {}", offset, key);
         ofNullable(payload).map(EventDto::getBody).ifPresentOrElse(
-            sourceDto -> sourceHandler.delete(sourceDto.getId()),
+            sourceDto -> sourceHandler
+                .delete(sourceDto.getId())
+                .subscribe(sourceDocument -> log.info("Kafka msg in {} offset with key {} had been successfully processed.", offset, key)),
             () -> log.error("Empty Source payload in {} offset with key {}", offset, key));
     }
 

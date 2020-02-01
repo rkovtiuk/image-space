@@ -10,7 +10,6 @@ spring:
       database: image-space-source-storage
       host: localhost
       port: 27017
-      username: mongodb
 
   kafka:
     consumer:
