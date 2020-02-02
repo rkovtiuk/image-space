@@ -1,6 +1,7 @@
 package com.imagespace.api.domain.service;
 
 import com.imagespace.api.common.dto.PostDto;
+import com.imagespace.api.common.exception.BadRequestException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +25,9 @@ public class PostService {
         var sourceId = UUID.randomUUID();
 
         var post = new PostDto(postId, accountId, sourceId);
-        imageService.savePostSource(sourceId, sourceData, () -> kafkaProducer.sendCreatePostEvent(post));
+        imageService.savePostSource(sourceId, sourceData);
+        kafkaProducer.sendCreatePostEvent(post)
+            .orElseThrow(() -> new BadRequestException("Can't create a post."));
     }
 
 }

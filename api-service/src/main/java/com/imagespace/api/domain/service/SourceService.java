@@ -1,6 +1,7 @@
 package com.imagespace.api.domain.service;
 
 import com.imagespace.api.common.dto.SourceDto;
+import com.imagespace.api.common.exception.BadRequestException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,10 +19,11 @@ public class SourceService {
 
     ProducerService kafkaProducer;
 
-    public void savePostSource(UUID sourceId, byte[] sourceData, Runnable onSuccessFunc) {
+    public void savePostSource(UUID sourceId, byte[] sourceData) {
         var source = new SourceDto(sourceId, sourceData);
         log.info("Start sending source to kafka for save");
-        kafkaProducer.sendCreateSourceEvent(source, onSuccessFunc);
+        kafkaProducer.sendCreateSourceEvent(source)
+            .orElseThrow(() -> new BadRequestException("Can't save a source."));
     }
 
 }

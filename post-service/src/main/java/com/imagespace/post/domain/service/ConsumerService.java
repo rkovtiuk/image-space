@@ -1,7 +1,9 @@
 package com.imagespace.post.domain.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imagespace.post.common.dto.EventDto;
-import com.imagespace.post.config.kafka.KafkaEventProperties;
+import com.imagespace.post.config.kafka.KafkaConfig;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -10,11 +12,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 import java.util.stream.StreamSupport;
+
+import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang.StringUtils.EMPTY;
 
 @Slf4j
 @Component
@@ -22,25 +25,20 @@ import java.util.stream.StreamSupport;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConsumerService {
 
-    String EMPTY_EVENT_NAME = "";
-
     PostService postService;
-    KafkaEventProperties eventProperties;
+    KafkaConfig kafkaConfig;
+    ObjectMapper objectMapper;
 
-    @KafkaListener(
-        topics = "${kafka-properties.post-topic-name}",
-        groupId = "${spring.kafka.consumer.group-id}")
-    public void consumeEvents(ConsumerRecord<String, EventDto> cr, @Payload EventDto payload) {
-        log.info("Kafka consumer received key {}: Type [{}] | Payload: {} | Record: {}",
-                cr.key(), typeIdHeader(cr.headers()), payload, cr.toString());
+    @KafkaListener(topics = "${kafka-properties.post-topic-name}", groupId = "${spring.kafka.consumer.group-id}")
+    public void consumeEvents(ConsumerRecord<String, String> cr) throws JsonProcessingException {
+        log.info("Kafka consumer received key {}: Type [{}] | Payload: {} | Record: {}", cr.key(), typeIdHeader(cr.headers()), cr.value(), cr.toString());
+        var payload = objectMapper.readValue(cr.value(), EventDto.class);
+        var eventName = ofNullable(payload).map(EventDto::getEventName).orElse(EMPTY);
 
-        var eventName = Optional.ofNullable(payload).map(EventDto::getEventName).orElse(EMPTY_EVENT_NAME);
-        if (eventName.equals(eventProperties.getCreateSourceEventName())) {
+        if (kafkaConfig.getCreateSourceEventName().equals(eventName)) {
             processCreatingPost(payload, cr.offset(), cr.key());
-        } else if (eventName.equals(eventProperties.getDeleteSourceEventName())) {
+        } else if (kafkaConfig.getDeleteSourceEventName().equals(eventName)) {
             processDeletingPost(payload, cr.offset(), cr.key());
-        } else if (eventName.equals(EMPTY_EVENT_NAME)) {
-            log.warn("Msg in {} offset with key {} in source topic will be filtered out because of empty event name", cr.offset(), cr.key());
         } else {
             log.warn("Msg in {} offset with key {} in source topic will be filtered out because of unexpected event name {}", cr.offset(), cr.key(), eventName);
         }
@@ -48,23 +46,22 @@ public class ConsumerService {
 
     private void processCreatingPost(EventDto payload, long offset, String key) {
         log.info("Start creating post from kafka msg in {} offset with key {}", offset, key);
-        Optional.ofNullable(payload).map(EventDto::getBody).ifPresentOrElse(
+        ofNullable(payload).map(EventDto::getBody).ifPresentOrElse(
             post -> postService.createPost(post.getSourceId(), post.getAccountId()),
             () -> log.error("Empty Post payload in {} offset with key {}", offset, key));
     }
 
     private void processDeletingPost(EventDto payload, long offset, String key) {
         log.info("Start removing source from kafka msg in {} offset with key {}", offset, key);
-        Optional.ofNullable(payload).map(EventDto::getBody).ifPresentOrElse(
+        ofNullable(payload).map(EventDto::getBody).ifPresentOrElse(
             post -> postService.deletePost(post.getId(), post.getAccountId()),
             () -> log.error("Empty Post payload in {} offset with key {}", offset, key));
-
     }
 
     private static String typeIdHeader(Headers headers) {
         return StreamSupport.stream(headers.spliterator(), false)
-                .filter(header -> header.key().equals("__TypeId__"))
-                .findFirst().map(header -> new String(header.value())).orElse("N/A");
+            .filter(header -> header.key().equals("__TypeId__"))
+            .findFirst().map(header -> new String(header.value())).orElse("N/A");
     }
 
 }

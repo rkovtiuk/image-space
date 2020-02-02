@@ -1,9 +1,10 @@
-package com.imagespace.api.config.producer;
+package com.imagespace.api.config.kafka;
 
 import com.imagespace.api.common.dto.EventDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -12,18 +13,24 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static java.util.function.Predicate.not;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Configuration
 @ConfigurationProperties(prefix = "kafka-properties")
-public class KafkaProducerConfiguration {
+public class KafkaConfig {
 
     String postTopicName;
     String likeTopicName;
@@ -55,13 +62,16 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public NewTopic sourceTopic() {
-        return new NewTopic(sourceTopicName, 1, (short) 1);
-    }
+    public AdminClient init(KafkaAdmin kafkaAdmin) {
+        List<String> topics = newArrayList(postTopicName, sourceTopicName, likeTopicName);
+        AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfig());
+        adminClient.listTopics().names().whenComplete((strings, throwable) -> adminClient.createTopics(
+            topics.stream()
+                .filter(not(strings::contains))
+                .map(topic -> new NewTopic(topic, 1, (short) 1))
+                .collect(Collectors.toList())));
 
-    @Bean
-    public NewTopic postTopic() {
-        return new NewTopic(postTopicName, 1, (short) 1);
+        return adminClient;
     }
 
 }
