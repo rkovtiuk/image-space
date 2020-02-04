@@ -24,19 +24,19 @@ public class SourceDocument {
     @Field("source_id")
     String sourceId;
 
-    @Field("image_data")
-    byte[] imageData;
+    @Field("post_data")
+    byte[] postData;
+
+    @Field("preview_data")
+    byte[] previewData;
+
+    @Field("small_data")
+    byte[] smallData;
 
     @Field("created_at")
     LocalDateTime createdAt;
 
     @Field("deleted")
     boolean deleted;
-
-    public SourceDocument(String sourceId, byte[] imageData) {
-        this.sourceId = sourceId;
-        this.imageData = imageData;
-        this.createdAt = LocalDateTime.now();
-    }
 
 }

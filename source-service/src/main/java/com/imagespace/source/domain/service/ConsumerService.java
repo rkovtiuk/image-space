@@ -2,9 +2,9 @@ package com.imagespace.source.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.imagespace.source.common.dto.EventDto;
 import com.imagespace.source.config.kafka.KafkaConfig;
 import com.imagespace.source.domain.handler.SourceHandler;
-import com.imagespace.source.dto.EventDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

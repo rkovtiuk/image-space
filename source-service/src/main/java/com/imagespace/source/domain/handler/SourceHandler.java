@@ -2,6 +2,7 @@ package com.imagespace.source.domain.handler;
 
 import com.imagespace.source.domain.entity.SourceDocument;
 import com.imagespace.source.domain.repository.SourceRepository;
+import com.imagespace.source.domain.service.ImageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,12 +26,13 @@ import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SourceHandler {
 
+    ImageService imageService;
     SourceRepository sourceRepository;
 
     @Transactional
     public Mono<SourceDocument> save(String sourceId, byte[] sourceData) {
         return this.sourceRepository
-            .save(new SourceDocument(sourceId, sourceData))
+            .save(imageService.resizeSourceData(sourceId, sourceData))
             .doOnSuccess(doc -> log.info("Image {} has been saved.", sourceId));
     }
 
@@ -47,6 +49,7 @@ public class SourceHandler {
 
     public Mono<ServerResponse> one(ServerRequest request) {
         return this.sourceRepository.findById(request.pathVariable("id"))
+            //TODO .map() to DTO
             .flatMap(image -> ServerResponse.ok().contentType(APPLICATION_JSON).body(fromValue(image)))
             .switchIfEmpty(ServerResponse.notFound().build());
     }
