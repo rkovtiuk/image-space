@@ -56,3 +56,12 @@ ribbon:
 logging:
   level:
     org.springframework.web.reactive.function.server.RouterFunctions: DEBUG
+
+source:
+  properties:
+    source-high: 720
+    source-width: 540
+    source-preview-high: 320
+    source-preview-width: 320
+    source-small-high: 120
+    source-small-width: 120
