@@ -4,6 +4,7 @@ import com.imagespace.source.common.projection.PostSource;
 import com.imagespace.source.common.projection.PreviewSource;
 import com.imagespace.source.common.projection.SmallSource;
 import lombok.experimental.UtilityClass;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -32,7 +33,8 @@ public class ServerResponseFactory {
     }
 
     private Mono<ServerResponse> getServerResponse(byte[] data) {
-        return ServerResponse.ok().contentType(MediaType.IMAGE_JPEG).body(fromValue(new ByteArrayInputStream(data)));
+        var response = fromValue(new InputStreamResource(new ByteArrayInputStream(data)));
+        return ServerResponse.ok().contentType(MediaType.IMAGE_JPEG).body(response);
     }
 
 }
