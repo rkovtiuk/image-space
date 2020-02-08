@@ -21,11 +21,19 @@ spring:
     # Kafka cluster or your Docker IP is different
     bootstrap-servers: 127.0.0.1:9092
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 6MB
+      location: ${java.io.tmpdir}
+
 kafka-properties:
   post-topic-name: post-topic
-  like-topic-name: like-topic
+  source-topic-name: source-topic
   create-post-event-name: create-post-event
-  delete-post-event-name: delete-post-event
+  create-source-event-name: create-source-event
+  delete-source-event-name: delete-source-event
   msg-per-request: 1
 
 cache:

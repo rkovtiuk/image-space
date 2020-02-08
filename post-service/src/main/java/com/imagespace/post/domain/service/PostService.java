@@ -1,5 +1,8 @@
 package com.imagespace.post.domain.service;
 
+import com.imagespace.post.common.dto.SourceDto;
+import com.imagespace.post.common.event.BaseEvent;
+import com.imagespace.post.common.exception.HttpExceptionBuilder;
 import com.imagespace.post.domain.entity.Like;
 import com.imagespace.post.domain.entity.Post;
 import com.imagespace.post.domain.repo.LikeRepository;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +36,7 @@ public class PostService {
 
     PostRepository postRepository;
     LikeRepository likeRepository;
+    ProducerService producerService;
 
     public Optional<Post> getPost(UUID postId) {
         log.info("Getting post by id '{}'.", postId);
@@ -89,6 +94,19 @@ public class PostService {
         var postId = UUID.randomUUID();
         log.info("Creating a post '{}' from account '{}'.", postId, accountId);
         return postRepository.save(new Post(postId, sourceId, MIN_LIKES_COUNT, accountId));
+    }
+
+    @Transactional
+    public Post createPost(byte[] sourceData, UUID accountId) {
+        log.info("Creating a post from account '{}'.", accountId);
+        var post = postRepository.save(new Post(UUID.randomUUID(), UUID.randomUUID(), MIN_LIKES_COUNT, accountId));
+        var source = new SourceDto(post.getSource(), sourceData);
+        Optional<SendResult<String, BaseEvent>> sendResult = producerService.sendCreateSourceEvent(source);
+        if (sendResult.isEmpty()) {
+            throw HttpExceptionBuilder.badRequest("Can't create event for saving source from post.");
+        }
+
+        return post;
     }
 
     @Transactional

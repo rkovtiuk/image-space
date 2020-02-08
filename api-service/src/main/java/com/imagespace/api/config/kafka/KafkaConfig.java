@@ -33,7 +33,6 @@ import static java.util.function.Predicate.not;
 public class KafkaConfig {
 
     String postTopicName;
-    String likeTopicName;
     String sourceTopicName;
 
     String createPostEventName;
@@ -63,7 +62,7 @@ public class KafkaConfig {
 
     @Bean
     public AdminClient init(KafkaAdmin kafkaAdmin) {
-        List<String> topics = newArrayList(postTopicName, sourceTopicName, likeTopicName);
+        List<String> topics = newArrayList(postTopicName, sourceTopicName);
         AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfig());
         adminClient.listTopics().names().whenComplete((strings, throwable) -> adminClient.createTopics(
             topics.stream()

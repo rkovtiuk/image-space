@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +26,18 @@ import java.util.UUID;
 public class PostController {
 
     PostService postService;
+
+    @PostMapping
+    public PostDto uploadPost(@RequestParam MultipartFile file, @RequestParam UUID account) {
+        log.info("Create a post from account '{}'", account);
+        try {
+            var post = postService.createPost(file.getBytes(), account);
+            return new PostDto(post);
+        } catch (IOException e) {
+            log.error("Can't process file from request to create a post.");
+            throw HttpExceptionBuilder.badRequest("Can't process file from request to create a post.");
+        }
+    }
 
     @GetMapping
     public Page<PostDto> getAccountPosts(@RequestParam List<UUID> accounts, Pageable page) {

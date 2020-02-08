@@ -12,7 +12,6 @@ spring:
 
 kafka-properties:
   post-topic-name: post-topic
-  like-topic-name: like-topic
   source-topic-name: source-topic
   create-post-event-name: create-post-event
   create-source-event-name: create-source-event
