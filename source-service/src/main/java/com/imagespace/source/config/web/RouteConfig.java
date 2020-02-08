@@ -1,5 +1,6 @@
 package com.imagespace.source.config.web;
 
+import com.imagespace.source.common.enums.SourceType;
 import com.imagespace.source.domain.handler.SourceHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +18,9 @@ public class RouteConfig {
     @Bean
     public RouterFunction<ServerResponse> sourceRoutes(SourceHandler handler) {
         return RouterFunctions
-            .route(GET("/source/{id}").and(accept(APPLICATION_JSON)), handler::one)
-            .andRoute(GET("/sources").and(accept(APPLICATION_JSON)), handler::all);
+            .route(GET("/sources/{id}").and(accept(APPLICATION_JSON)), request -> handler.one(request, SourceType.POST))
+            .andRoute(GET("/sources/{id}/preview").and(accept(APPLICATION_JSON)), request -> handler.one(request, SourceType.PREVIEW))
+            .andRoute(GET("/sources/{id}/small").and(accept(APPLICATION_JSON)), request -> handler.one(request, SourceType.SMALL));
     }
 
 }

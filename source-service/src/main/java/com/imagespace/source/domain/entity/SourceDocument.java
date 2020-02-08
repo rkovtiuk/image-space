@@ -24,7 +24,7 @@ public class SourceDocument {
     @Field("source_id")
     String sourceId;
 
-    @Field("post_data")
+    @Field("image_data")
     byte[] postData;
 
     @Field("preview_data")

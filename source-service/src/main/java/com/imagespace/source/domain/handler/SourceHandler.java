@@ -1,5 +1,7 @@
 package com.imagespace.source.domain.handler;
 
+import com.imagespace.source.common.enums.SourceType;
+import com.imagespace.source.common.factory.ServerResponseFactory;
 import com.imagespace.source.domain.entity.SourceDocument;
 import com.imagespace.source.domain.repository.SourceRepository;
 import com.imagespace.source.domain.service.ImageService;
@@ -12,13 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.web.reactive.function.BodyInserters.fromValue;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -39,7 +37,7 @@ public class SourceHandler {
     @Transactional
     public Mono<SourceDocument> delete(String sourceId) {
         return this.sourceRepository
-            .findById(sourceId)
+            .findFirstBySourceId(sourceId)
             .map(source -> {
                 source.setDeleted(true);
                 sourceRepository.save(source);
@@ -47,19 +45,21 @@ public class SourceHandler {
             }).doOnSuccess(doc -> log.info("Source {} has been deleted.", sourceId));
     }
 
-    public Mono<ServerResponse> one(ServerRequest request) {
-        return this.sourceRepository.findById(request.pathVariable("id"))
-            //TODO .map() to DTO
-            .flatMap(image -> ServerResponse.ok().contentType(APPLICATION_JSON).body(fromValue(image)))
-            .switchIfEmpty(ServerResponse.notFound().build());
+    public Mono<ServerResponse> one(ServerRequest request, SourceType sourceType) {
+        return Optional.ofNullable(sourceType)
+            .map(type -> getSourceData(request.pathVariable("id"), type))
+            .orElseGet(ServerResponseFactory::getServerResponse);
     }
 
-    public Mono<ServerResponse> all(ServerRequest request) {
-        return request.queryParam("ids")
-            .map(ids -> Arrays.asList(ids.split(",")))
-            .map(this.sourceRepository::findAllBySourceIdIn)
-            .map(images -> ServerResponse.ok().contentType(APPLICATION_JSON).body(images, SourceDocument.class))
-            .orElse(ServerResponse.ok().contentType(APPLICATION_JSON).body(Flux.empty(), SourceDocument.class));
+    private Mono<ServerResponse> getSourceData(String id, SourceType sourceType) {
+        switch (sourceType) {
+            case PREVIEW: return this.sourceRepository.findPreviewSourceById(id).flatMap(ServerResponseFactory::getServerResponse)
+                .switchIfEmpty(ServerResponseFactory.getServerResponse());
+            case SMALL: return this.sourceRepository.findSmallSourceById(id).flatMap(ServerResponseFactory::getServerResponse)
+                .switchIfEmpty(ServerResponseFactory.getServerResponse());
+            default: return this.sourceRepository.findPostSourceById(id).flatMap(ServerResponseFactory::getServerResponse)
+                .switchIfEmpty(ServerResponseFactory.getServerResponse());
+        }
     }
 
 }
