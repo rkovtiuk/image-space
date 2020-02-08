@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.IMAGE_JPEG;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
@@ -18,9 +18,9 @@ public class RouteConfig {
     @Bean
     public RouterFunction<ServerResponse> sourceRoutes(SourceHandler handler) {
         return RouterFunctions
-            .route(GET("/sources/{id}").and(accept(APPLICATION_JSON)), request -> handler.one(request, SourceType.POST))
-            .andRoute(GET("/sources/{id}/preview").and(accept(APPLICATION_JSON)), request -> handler.one(request, SourceType.PREVIEW))
-            .andRoute(GET("/sources/{id}/small").and(accept(APPLICATION_JSON)), request -> handler.one(request, SourceType.SMALL));
+            .route(GET("/sources/{id}").and(accept(IMAGE_JPEG)), request -> handler.one(request, SourceType.POST))
+            .andRoute(GET("/sources/{id}/preview").and(accept(IMAGE_JPEG)), request -> handler.one(request, SourceType.PREVIEW))
+            .andRoute(GET("/sources/{id}/small").and(accept(IMAGE_JPEG)), request -> handler.one(request, SourceType.SMALL));
     }
 
 }
