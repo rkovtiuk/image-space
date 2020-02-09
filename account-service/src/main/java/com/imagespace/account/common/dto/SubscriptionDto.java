@@ -8,14 +8,22 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
+
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ExistsDto {
+public class SubscriptionDto {
 
-    @JsonProperty("exists")
-    private boolean exists;
+    @JsonProperty("id")
+    UUID subscriptionId;
+
+    @JsonProperty("follower_id")
+    UUID follower;
+
+    @JsonProperty("following_id")
+    UUID following;
 
 }

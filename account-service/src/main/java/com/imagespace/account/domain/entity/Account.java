@@ -24,6 +24,10 @@ public class Account extends BaseEntity {
 
     @Id @AccessType(PROPERTY) UUID id;
 
+    @Column String username;
+
+    @Column UUID avatar;
+
     @Column String password;
 
     @Column String name;

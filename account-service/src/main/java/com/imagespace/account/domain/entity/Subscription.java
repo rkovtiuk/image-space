@@ -1,6 +1,5 @@
 package com.imagespace.account.domain.entity;
 
-
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
@@ -12,28 +11,28 @@ import java.util.UUID;
 import static org.springframework.data.annotation.AccessType.Type.PROPERTY;
 
 @Entity
-@Table(name = "post")
+@Table(name = "subscription")
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
-public class Subscribe extends BaseEntity {
+public class Subscription extends BaseEntity {
 
     @Id @AccessType(PROPERTY) UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "subscriber_id")
-    Account subscriber;
+    @JoinColumn(name = "follower_id")
+    Account follower;
 
     @ManyToOne
-    @JoinColumn(name = "subscribing_id")
-    Account subscribing;
+    @JoinColumn(name = "following_id")
+    Account following;
 
-    public Subscribe(UUID subscriber, UUID subscribing) {
+    public Subscription(UUID follower, UUID following) {
         this.id = UUID.randomUUID();
-        this.subscriber = new Account().setId(subscriber);
-        this.subscribing = new Account().setId(subscribing);
+        this.follower = new Account().setId(follower);
+        this.following = new Account().setId(following);
     }
 }
