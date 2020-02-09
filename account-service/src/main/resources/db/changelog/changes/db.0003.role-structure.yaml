@@ -5,40 +5,21 @@ databaseChangeLog:
       author: rkovtiuk
       changes:
         - createTable:
-            tableName: account
+            tableName: role
             columns:
               - column:
                   name: id
-                  type: uuid
+                  type: int
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
-              - column:
-                  name: username
-                  type: varchar(55)
-                  constraints:
-                    unique: true
-                    nullable: false
-              - column:
-                  name: password
-                  type: varchar(255)
-                  constraints:
                     nullable: false
               - column:
                   name: name
                   type: varchar(55)
                   constraints:
-                    nullable: true
-              - column:
-                  name: info
-                  type: varchar(255)
-                  constraints:
-                    nullable: true
-              - column:
-                  name: avatar
-                  type: uuid
-                  constraints:
-                    nullable: true
+                    unique: true
+                    nullable: false
               - column:
                   name: created_at
                   type: timestamp

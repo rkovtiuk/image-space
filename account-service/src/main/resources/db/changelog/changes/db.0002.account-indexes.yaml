@@ -1,0 +1,13 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: rkovtiuk
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: username
+            indexName: idx_username
+            tableName: account
+            unique: true

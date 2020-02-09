@@ -9,6 +9,9 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
+                  value: 7668b478-997f-4727-8a6b-a5b5ea123a84
+              - column:
+                  name: username
                   value: rkovtiuk
               - column:
                   name: password
@@ -28,11 +31,11 @@ databaseChangeLog:
             tableName: role
             columns:
               - column:
+                  name: id
+                  value: 1
+              - column:
                   name: name
                   value: USER
-              - column:
-                  name: account_id
-                  value: rkovtiuk
 
   - changeSet:
       id: 3
@@ -42,8 +45,36 @@ databaseChangeLog:
             tableName: role
             columns:
               - column:
+                  name: id
+                  value: 2
+              - column:
                   name: name
                   value: ADMIN
+
+  - changeSet:
+      id: 4
+      author: rkovtiuk
+      changes:
+        - insert:
+            tableName: account_role
+            columns:
               - column:
                   name: account_id
-                  value: rkovtiuk
+                  value: 7668b478-997f-4727-8a6b-a5b5ea123a84
+              - column:
+                  name: role_id
+                  value: 1
+
+  - changeSet:
+      id: 5
+      author: rkovtiuk
+      changes:
+        - insert:
+            tableName: account_role
+            columns:
+              - column:
+                  name: account_id
+                  value: 7668b478-997f-4727-8a6b-a5b5ea123a84
+              - column:
+                  name: role_id
+                  value: 2

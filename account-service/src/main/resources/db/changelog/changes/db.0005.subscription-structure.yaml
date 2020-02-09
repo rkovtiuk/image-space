@@ -9,21 +9,21 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: varchar(36)
+                  type: uuid
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: subscriber_id
-                  type: varchar(55)
+                  name: follower_id
+                  type: uuid
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_subscriber_account_id
+                    foreignKeyName: fk_follower_account_id
                     references: account(id)
               - column:
-                  name: subscribing_id
-                  type: varchar(55)
+                  name: following_id
+                  type: uuid
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_subscribing_account_id
+                    foreignKeyName: fk_following_account_id
                     references: account(id)

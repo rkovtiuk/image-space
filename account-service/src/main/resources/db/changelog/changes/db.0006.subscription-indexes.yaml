@@ -1,0 +1,23 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: rkovtiuk
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: follower_id
+            indexName: idx_follower_id
+            tableName: subscription
+
+  - changeSet:
+      id: 2
+      author: rkovtiuk
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: following_id
+            indexName: idx_following_id
+            tableName: subscription
