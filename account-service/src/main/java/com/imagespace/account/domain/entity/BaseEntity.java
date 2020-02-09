@@ -1,6 +1,7 @@
 package com.imagespace.account.domain.entity;
 
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,9 +12,9 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
-
+@Data
 @MappedSuperclass
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners({AuditingEntityListener.class})
 abstract class BaseEntity implements Serializable {
 

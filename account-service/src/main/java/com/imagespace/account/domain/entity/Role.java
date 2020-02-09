@@ -21,15 +21,6 @@ public class Role extends BaseEntity {
     Long id;
 
     @Column
-    @Enumerated
-    RoleType name;
-
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    Account account;
-
-    public enum RoleType {
-        USER, ADMIN
-    }
+    String name;
 
 }
