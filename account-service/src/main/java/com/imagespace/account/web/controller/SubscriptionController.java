@@ -22,10 +22,17 @@ public class SubscriptionController {
 
     SubscriptionService subscriptionService;
 
-    @GetMapping
-    public Page<AccountBaseDto> getSubscriptions(@RequestParam UUID followerId, Pageable page) {
+    @GetMapping("/{followerId}")
+    public Page<SubscriptionDto> getSubscriptionDto(@PathVariable UUID followerId, Pageable page) {
         return subscriptionService
             .getSubscriptions(followerId, page)
+            .map(sub -> new SubscriptionDto(sub.getId(), sub.getFollower().getId(), sub.getFollowing().getId()));
+    }
+
+    @GetMapping("/{followerId}/accounts")
+    public Page<AccountBaseDto> getSubscriptionsAccounts(@PathVariable UUID followerId, Pageable page) {
+        return subscriptionService
+            .getSubscriptionsAccounts(followerId, page)
             .map(account -> new AccountBaseDto(account.getId(), account.getUsername(), account.getAvatar()));
     }
 
