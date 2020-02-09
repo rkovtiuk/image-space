@@ -1,7 +1,8 @@
 package com.imagespace.account.web.controller;
 
+import com.imagespace.account.common.dto.AccountDto;
+import com.imagespace.account.common.dto.CredentialsDto;
 import com.imagespace.account.common.exception.HttpExceptionBuilder;
-import com.imagespace.account.domain.entity.Account;
 import com.imagespace.account.domain.service.AccountService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,28 +22,33 @@ public class AccountController {
     AccountService accountService;
 
 
+    @GetMapping
+    public AccountDto getAccount(@RequestParam(required = false) UUID id,
+                                 @RequestParam(required = false) String username) {
+        return accountService
+            .findAccount(id, username)
+            .map(AccountDto::new)
+            .orElseThrow(() -> HttpExceptionBuilder.notFound("Can't find account"));
+    }
+
     @PostMapping
-    public Account createAccount(@RequestBody Account account) {
-        return accountService.createAccount(account.getId(), account.getPassword());
+    public AccountDto createAccount(@RequestBody CredentialsDto credentials) {
+        var account = accountService.createAccount(credentials.getUsername(), credentials.getPassword());
+        return new AccountDto(account);
     }
 
-    @GetMapping("/{accountId}")
-    public Account getAccount(@PathVariable UUID accountId) {
+    @PutMapping("/{accountId}")
+    public AccountDto updateAccount(@PathVariable UUID id, @RequestBody AccountDto request) {
         return accountService
-                .findAccountById(accountId)
-                .orElseThrow(() -> HttpExceptionBuilder.notFound("Can't find account with id " + accountId.toString()));
+            .updateAccount(id, request.getUsername(), request.getAvatar(), request.getInfo())
+            .map(AccountDto::new)
+            .orElseThrow(() -> HttpExceptionBuilder.notFound("Can't find account"));
     }
 
-    @GetMapping("/usernames/{username}")
-    public Account getAccountByUsername(@PathVariable String username) {
-        return accountService
-            .findAccountByUsername(username)
-            .orElseThrow(() -> HttpExceptionBuilder.notFound("Can't find account with username " + username));
-    }
-
-    @GetMapping("/{accountId}/exists")
-    public ResponseEntity<?> accountExists(@PathVariable UUID accountId) {
-        return accountService.exists(accountId)
+    @GetMapping("/exists")
+    public ResponseEntity<?> accountExists(@RequestParam(required = false) UUID id,
+                                           @RequestParam(required = false) String username) {
+        return accountService.exists(id, username)
             ? ResponseEntity.ok().build()
             : ResponseEntity.notFound().build();
     }

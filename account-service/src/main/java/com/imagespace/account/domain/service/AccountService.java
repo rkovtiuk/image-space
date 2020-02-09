@@ -9,11 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.util.function.Predicate.not;
 
 @Slf4j
 @Service
@@ -23,31 +27,39 @@ public class AccountService {
 
     AccountRepository accountRepository;
 
-    @Cacheable(value = "accounts", key = "#id")
-    public Optional<Account> findAccountById(UUID id) {
-        log.debug("Get account by id '{}'.", id);
-        return accountRepository.findOneById(id);
-    }
-
-    @Cacheable(value = "usernames", key = "#username")
-    public Optional<Account> findAccountByUsername(String username) {
-        log.debug("Get account by username '{}'.", username);
-        return accountRepository.findOneByUsername(username);
-    }
-
-    public boolean exists(UUID accountId) {
-        log.debug("Check if account exists for id '{}'.", accountId);
-        return accountRepository.existsAccountById(accountId);
-    }
-
     @Transactional
-    @CachePut(value = "accounts", key = "#id")
-    public Account createAccount(UUID id, String password) {
-        log.debug("Creating account with id '{}'.", id);
-        return accountRepository.save(
-            new Account()
-                .setId(id)
-                .setPassword(password));
+    @CachePut(value = "usernames", key = "#username")
+    public Account createAccount(String username, String password) {
+        log.debug("Creating account with username '{}'.", username);
+        var account = new Account().setId(UUID.randomUUID()).setName(username).setPassword(password);
+        return accountRepository.save(account);
+    }
+
+    @Cacheable(value = "usernames", key = "#accountId + #username")
+    public Optional<Account> findAccount(UUID accountId, String username) {
+        log.debug("Find account by id '{}' and username '{}'.", accountId, username);
+        return accountRepository.findOne(exampleOf(accountId, username));
+    }
+
+    public Optional<Account> updateAccount(UUID id, String username, UUID avatar, String info) {
+        log.debug("Update account '{}' with param: username:'{}' avatar:'{}' info:'{}'.", id, username, avatar, info);
+        return accountRepository.findOneByUsername(username)
+            .map(account -> {
+                Optional.ofNullable(info).filter(not(StringUtils::isEmpty)).ifPresent(account::setInfo);
+                Optional.ofNullable(avatar).filter(not(StringUtils::isEmpty)).ifPresent(account::setAvatar);
+                Optional.ofNullable(username).filter(not(StringUtils::isEmpty)).ifPresent(account::setUsername);
+                return account;
+            }).map(accountRepository::save);
+    }
+
+    @Cacheable(value = "exists", key = "#accountId + #username")
+    public boolean exists(UUID accountId, String username) {
+        log.debug("Check if account exists for id '{}'.", accountId);
+        return accountRepository.exists(exampleOf(accountId, username));
+    }
+
+    private Example<Account> exampleOf(UUID accountId, String username) {
+        return Example.of(new Account().setId(accountId).setUsername(username));
     }
 
 }

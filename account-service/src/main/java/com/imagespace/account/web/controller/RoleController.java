@@ -21,6 +21,7 @@ public class RoleController {
 
     RoleService roleService;
 
+
     @GetMapping
     public Page<RoleDto> getRoles(Pageable page) {
         return roleService.findAll(page).map(RoleDto::new);
