@@ -31,7 +31,7 @@ public class SubscriptionService {
         log.debug("Search subscribes by account '{}' and parameters {}.", followerId, pageable);
         return subscriptionRepository
                 .findAllByFollower_Id(followerId, pageable)
-                .map(Subscription::getFollowing); // TODO
+                .map(Subscription::getFollowing);
     }
 
     @Transactional

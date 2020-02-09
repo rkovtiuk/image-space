@@ -15,7 +15,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: account_id
-                  type: varchar(55)
+                  type: uuid
                   constraints:
                     nullable: false
                     foreignKeyName: fk_role_account_id

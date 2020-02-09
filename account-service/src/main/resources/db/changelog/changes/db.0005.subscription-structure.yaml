@@ -5,7 +5,7 @@ databaseChangeLog:
       author: rkovtiuk
       changes:
         - createTable:
-            tableName: subscribe
+            tableName: subscription
             columns:
               - column:
                   name: id

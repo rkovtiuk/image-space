@@ -59,6 +59,9 @@ databaseChangeLog:
             tableName: account_role
             columns:
               - column:
+                  name: id
+                  value: f825ab5b-aa5d-492c-80d3-31f5f558fadb
+              - column:
                   name: account_id
                   value: 7668b478-997f-4727-8a6b-a5b5ea123a84
               - column:
@@ -72,6 +75,9 @@ databaseChangeLog:
         - insert:
             tableName: account_role
             columns:
+              - column:
+                  name: id
+                  value: 2b07416c-449b-46de-99bf-8d2f95cd51f0
               - column:
                   name: account_id
                   value: 7668b478-997f-4727-8a6b-a5b5ea123a84
