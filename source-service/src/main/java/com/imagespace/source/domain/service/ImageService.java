@@ -29,7 +29,7 @@ public class ImageService {
             .id(sourceId)
             .postData(resizeToPost(sourceId, sourceData))
             .previewData(resizeToPreview(sourceId, sourceData))
-            .smallData(resizeToSmall(sourceId, resizeToSmall(sourceId, sourceData)))
+            .smallData(resizeToSmall(sourceId, sourceData))
             .build();
     }
 
