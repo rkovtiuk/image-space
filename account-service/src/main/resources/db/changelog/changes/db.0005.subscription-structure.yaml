@@ -14,6 +14,11 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: priority
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
                   name: follower_id
                   type: uuid
                   constraints:

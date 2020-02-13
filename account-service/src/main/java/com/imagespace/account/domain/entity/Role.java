@@ -20,7 +20,6 @@ public class Role extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
-    String name;
+    @Column String name;
 
 }

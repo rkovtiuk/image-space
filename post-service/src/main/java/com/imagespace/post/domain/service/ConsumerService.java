@@ -46,14 +46,14 @@ public class ConsumerService {
 
     private void processCreatingPost(PostEvent payload, long offset, String key) {
         log.info("Start creating post from kafka msg in {} offset with key {}", offset, key);
-        ofNullable(payload).map(PostEvent::getBody).ifPresentOrElse(
+        ofNullable(payload).map(PostEvent::getPayload).ifPresentOrElse(
             post -> postService.createPost(post.getSourceId(), post.getAccountId()),
             () -> log.error("Empty Post payload in {} offset with key {}", offset, key));
     }
 
     private void processDeletingPost(PostEvent payload, long offset, String key) {
         log.info("Start removing source from kafka msg in {} offset with key {}", offset, key);
-        ofNullable(payload).map(PostEvent::getBody).ifPresentOrElse(
+        ofNullable(payload).map(PostEvent::getPayload).ifPresentOrElse(
             post -> postService.deletePost(post.getId(), post.getAccountId()),
             () -> log.error("Empty Post payload in {} offset with key {}", offset, key));
     }

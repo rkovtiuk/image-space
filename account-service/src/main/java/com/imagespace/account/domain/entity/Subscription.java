@@ -22,6 +22,8 @@ public class Subscription extends BaseEntity {
 
     @Id @AccessType(PROPERTY) UUID id;
 
+    @Column int priority;
+
     @ManyToOne
     @JoinColumn(name = "follower_id")
     Account follower;

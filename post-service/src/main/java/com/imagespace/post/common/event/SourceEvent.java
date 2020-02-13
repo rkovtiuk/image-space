@@ -14,11 +14,11 @@ import lombok.experimental.FieldDefaults;
 public class SourceEvent extends BaseEvent {
 
     @JsonProperty("payload")
-    SourceDto sourceDto;
+    SourceDto payload;
 
-    public SourceEvent(String eventName, SourceDto sourceDto) {
+    public SourceEvent(String eventName, SourceDto payload) {
         super(eventName);
-        this.sourceDto = sourceDto;
+        this.payload = payload;
     }
 
 }

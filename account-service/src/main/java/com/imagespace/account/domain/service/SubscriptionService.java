@@ -9,11 +9,15 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
+
+import static com.imagespace.account.common.util.Constants.*;
 
 @Slf4j
 @Service
@@ -24,7 +28,9 @@ public class SubscriptionService {
     SubscriptionRepository subscriptionRepository;
 
     public Page<Subscription> getSubscriptions(UUID followerId, Pageable page) {
-        return subscriptionRepository.findAllByFollower_Id(followerId, page);
+        var sort = Sort.by("priority").descending().and(Sort.by("createdAt").ascending());
+        var pageRequest = PageRequest.of(page.getPageNumber(), Math.min(page.getPageSize(), MAX_PAGE_SIZE), sort);
+        return subscriptionRepository.findAllByFollower_Id(followerId, pageRequest);
     }
 
     public Page<Account> getSubscriptionsAccounts(UUID followerId, Pageable pageable) {
@@ -48,6 +54,38 @@ public class SubscriptionService {
         subscriptionRepository
             .findFirstByFollower_IdAndFollowing_Id(followerId, followingId)
             .ifPresent(subscriptionRepository::delete);
+    }
+
+    public void updateSubscriptionPriorityBecauseOfNewSubscription(Subscription subscription) {
+        // TODO: 13.02.2020
+    }
+
+    @Transactional
+    public void updateSubscriptionPriorityByLike(UUID followerId, UUID followingId) {
+        log.debug("Remove one priority of following '{}' in follower '{}' subscriptions.", followingId, followerId);
+        subscriptionRepository
+            .findFirstByFollower_IdAndFollowing_Id(followerId, followingId)
+            .ifPresent(this::updateSubscriptionPriorityByLike);
+    }
+
+    private void updateSubscriptionPriorityByLike(Subscription subscription) {
+        log.debug("Start update priority of subscription '{}' by like.", subscription.getId());
+        var page = PageRequest.of(FIRST_PAGE_NUMBER, MAX_PAGE_SIZE);
+        Page<Subscription> subscriptions = getSubscriptions(subscription.getFollower().getId(), page);
+        if (subscriptions.getNumberOfElements() == MAX_PAGE_SIZE && !subscriptions.getContent().contains(subscription))
+            changePriorityOfLastSubscriptionToMin(subscriptions);
+
+        int updatedPriority = Math.min(subscription.getPriority() + 1, MAX_SUBSCRIPTION_PRIORITY);
+        subscription.setPriority(updatedPriority);
+        subscriptionRepository.save(subscription);
+    }
+
+    private void changePriorityOfLastSubscriptionToMin(Page<Subscription> subscriptions) {
+        subscriptions.getContent().stream().reduce((first, last) -> last).ifPresent(lastSubscription -> {
+            log.debug("Find last subscription '{}' for change priority to min '{}'.", lastSubscription.getId(), MIN_SUBSCRIPTION_PRIORITY);
+            lastSubscription.setPriority(MIN_SUBSCRIPTION_PRIORITY);
+            subscriptionRepository.save(lastSubscription);
+        });
     }
 
 }

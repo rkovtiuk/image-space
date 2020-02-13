@@ -1,7 +1,7 @@
-package com.imagespace.post.common.event;
+package com.imagespace.account.common.event;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.imagespace.post.common.dto.SubscriptionDto;
+import com.imagespace.account.common.dto.SubscriptionDto;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

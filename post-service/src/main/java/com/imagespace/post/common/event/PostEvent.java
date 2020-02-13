@@ -14,11 +14,11 @@ import lombok.experimental.FieldDefaults;
 public class PostEvent extends BaseEvent {
 
     @JsonProperty("payload")
-    PostDto body;
+    PostDto payload;
 
-    public PostEvent(String eventName, PostDto body) {
+    public PostEvent(String eventName, PostDto payload) {
         super(eventName);
-        this.body = body;
+        this.payload = payload;
     }
 
 }
