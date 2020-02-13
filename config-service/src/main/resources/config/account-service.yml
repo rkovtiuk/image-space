@@ -13,6 +13,26 @@ spring:
     username: root
     password: root
 
+  kafka:
+    consumer:
+      group-id: post-service
+      auto-offset-reset: latest
+    # change this property if you are using your own
+    # Kafka cluster or your Docker IP is different
+    bootstrap-servers: 127.0.0.1:9092
+
+kafka-properties:
+  topics:
+    post: post-topic
+    source: source-topic
+    subscription: subscription-topic
+  events:
+    create-post: create-post-event
+    create-source: create-source-event
+    delete-source: delete-source-event
+    update-subscription-priority: update-subscription-priority
+  msg-per-request: 1
+
 cache:
   duration: 1 # minutes
 
