@@ -1,5 +1,6 @@
 package com.imagespace.account.domain.entity;
 
+import com.imagespace.account.common.util.Constants;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
@@ -34,6 +35,7 @@ public class Subscription extends BaseEntity {
 
     public Subscription(UUID follower, UUID following) {
         this.id = UUID.randomUUID();
+        this.priority = Constants.DEFAULT_SUBSCRIPTION_PRIORITY;
         this.follower = new Account().setId(follower);
         this.following = new Account().setId(following);
     }

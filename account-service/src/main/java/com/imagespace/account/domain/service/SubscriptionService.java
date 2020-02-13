@@ -43,6 +43,11 @@ public class SubscriptionService {
     @Transactional
     public Subscription follow(UUID followerId, UUID followingId) {
         log.debug("Creating subscription for account '{}' on '{}'.", followerId, followingId);
+        var page = PageRequest.of(FIRST_PAGE_NUMBER, MAX_PAGE_SIZE);
+        Page<Subscription> subscriptions = getSubscriptions(followerId, page);
+        if (subscriptions.getNumberOfElements() == MAX_PAGE_SIZE)
+            changePriorityOfLastSubscriptionToMin(subscriptions);
+
         return subscriptionRepository
             .findFirstByFollower_IdAndFollowing_Id(followerId, followingId)
             .orElseGet(() -> subscriptionRepository.save(new Subscription(followerId, followingId)));
@@ -54,10 +59,6 @@ public class SubscriptionService {
         subscriptionRepository
             .findFirstByFollower_IdAndFollowing_Id(followerId, followingId)
             .ifPresent(subscriptionRepository::delete);
-    }
-
-    public void updateSubscriptionPriorityBecauseOfNewSubscription(Subscription subscription) {
-        // TODO: 13.02.2020
     }
 
     @Transactional

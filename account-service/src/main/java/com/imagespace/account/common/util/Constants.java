@@ -9,6 +9,7 @@ public class Constants {
     public int FIRST_PAGE_NUMBER = 0;
 
     public int MAX_SUBSCRIPTION_PRIORITY = 500;
+    public int DEFAULT_SUBSCRIPTION_PRIORITY = 250;
     public int MIN_SUBSCRIPTION_PRIORITY = 0;
 
 }
