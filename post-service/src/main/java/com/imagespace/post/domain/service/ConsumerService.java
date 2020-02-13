@@ -3,7 +3,7 @@ package com.imagespace.post.domain.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imagespace.post.common.event.PostEvent;
-import com.imagespace.post.config.kafka.KafkaConfig;
+import com.imagespace.post.config.kafka.KafkaEventConfig;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,8 +26,8 @@ import static org.apache.commons.lang.StringUtils.EMPTY;
 public class ConsumerService {
 
     PostService postService;
-    KafkaConfig kafkaConfig;
     ObjectMapper objectMapper;
+    KafkaEventConfig kafkaEventConfig;
 
     @KafkaListener(topics = "${kafka-properties.post-topic-name}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeEvents(ConsumerRecord<String, String> cr) throws JsonProcessingException {
@@ -35,9 +35,9 @@ public class ConsumerService {
         var payload = objectMapper.readValue(cr.value(), PostEvent.class);
         var eventName = ofNullable(payload).map(PostEvent::getEventName).orElse(EMPTY);
 
-        if (kafkaConfig.getCreateSourceEventName().equals(eventName)) {
+        if (kafkaEventConfig.getCreatePost().equals(eventName)) {
             processCreatingPost(payload, cr.offset(), cr.key());
-        } else if (kafkaConfig.getDeleteSourceEventName().equals(eventName)) {
+        } else if (kafkaEventConfig.getDeleteSource().equals(eventName)) {
             processDeletingPost(payload, cr.offset(), cr.key());
         } else {
             log.warn("Msg in {} offset with key {} in source topic will be filtered out because of unexpected event name {}", cr.offset(), cr.key(), eventName);

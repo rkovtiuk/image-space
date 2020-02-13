@@ -29,11 +29,15 @@ spring:
       location: ${java.io.tmpdir}
 
 kafka-properties:
-  post-topic-name: post-topic
-  source-topic-name: source-topic
-  create-post-event-name: create-post-event
-  create-source-event-name: create-source-event
-  delete-source-event-name: delete-source-event
+  topics:
+    post: post-topic
+    source: source-topic
+    subscription: subscription-topic
+  events:
+    create-post: create-post-event
+    create-source: create-source-event
+    delete-source: delete-source-event
+    update-subscription-priority: update-subscription-priority
   msg-per-request: 1
 
 cache:

@@ -71,6 +71,7 @@ public class PostService {
                 log.info("After adding like to post '{}' from account '{}', the count of likes increased from '{}' to '{}'.", postId, accountId, post.getLikes(), likes);
                 post.setLikes(likes);
                 postRepository.save(post);
+                producerService.sendUpdateSubscriptionPriority(accountId, post.getAccountId());
             });
     }
 
