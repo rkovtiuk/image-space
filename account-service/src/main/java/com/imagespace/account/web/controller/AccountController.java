@@ -2,6 +2,7 @@ package com.imagespace.account.web.controller;
 
 import com.imagespace.account.common.dto.AccountDto;
 import com.imagespace.account.common.dto.CredentialsDto;
+import com.imagespace.account.common.dto.FullAccountDto;
 import com.imagespace.account.common.exception.HttpExceptionBuilder;
 import com.imagespace.account.domain.service.AccountService;
 import lombok.AccessLevel;
@@ -21,6 +22,12 @@ public class AccountController {
 
     AccountService accountService;
 
+    @GetMapping("/{username}/full-info")
+    public FullAccountDto getAccountWithCredentialsAndRoles(@PathVariable("username") String username) {
+        return accountService
+            .findAccountFullInfo(username)
+            .orElseThrow(() -> HttpExceptionBuilder.notFound(String.format("Can't find account by username '%s'", username)));
+    }
 
     @GetMapping
     public AccountDto getAccount(@RequestParam(required = false) UUID id,

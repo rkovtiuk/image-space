@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, UUID> {
 
-    @EntityGraph(value = "Like.post")
+    @EntityGraph(attributePaths = {"post"})
     Optional<Like> findTopByAccountIdAndPost_Id(UUID accountId, UUID postId);
 
     Long countByPostId(UUID postId);

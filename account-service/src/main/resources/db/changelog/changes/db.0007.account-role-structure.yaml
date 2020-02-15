@@ -4,20 +4,38 @@ databaseChangeLog:
       id: 1
       author: rkovtiuk
       changes:
-        - createIndex:
+        - createTable:
+            tableName: account_role
             columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
               - column:
                   name: account_id
-            indexName: idx_account_id
-            tableName: account_role
-
-  - changeSet:
-      id: 2
-      author: rkovtiuk
-      changes:
-        - createIndex:
-            columns:
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_role_account_id
+                    references: account(id)
               - column:
                   name: role_id
-            indexName: idx_role_id
-            tableName: account_role
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_role_id
+                    references: role(id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  defaultValueComputed: current_timestamp
+                  constraints:
+                    nullable: false

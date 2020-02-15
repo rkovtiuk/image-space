@@ -15,7 +15,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, UUID
 
     Optional<Subscription> findFirstByFollower_IdAndFollowing_Id(UUID followerId, UUID followingId);
 
-    @EntityGraph(value = "Subscription.following")
+    @EntityGraph(attributePaths = {"following"})
     Page<Subscription> findAllByFollower_Id(UUID followerId, Pageable pageable);
 
 }

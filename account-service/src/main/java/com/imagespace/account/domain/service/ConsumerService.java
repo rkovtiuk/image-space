@@ -29,7 +29,7 @@ public class ConsumerService {
     KafkaEventConfig kafkaEventConfig;
     SubscriptionService subscriptionService;
 
-    @KafkaListener(topics = "${kafka-properties.post-topic-name}", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${kafka-properties.topics.post}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeEvents(ConsumerRecord<String, String> cr) throws JsonProcessingException {
         log.info("Kafka consumer received key {}: Type [{}] | Payload: {} | Record: {}", cr.key(), typeIdHeader(cr.headers()), cr.value(), cr.toString());
         var payload = objectMapper.readValue(cr.value(), SubscriptionEvent.class);

@@ -7,10 +7,8 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.AccessType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.data.annotation.AccessType.Type.PROPERTY;
@@ -33,6 +31,9 @@ public class Account extends BaseEntity {
     @Column String name;
 
     @Column String info;
+
+    @OneToMany(mappedBy = "account")
+    List<AccountRole> accountRoles;
 
 }
 

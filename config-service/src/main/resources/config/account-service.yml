@@ -15,7 +15,7 @@ spring:
 
   kafka:
     consumer:
-      group-id: post-service
+      group-id: account-service
       auto-offset-reset: latest
     # change this property if you are using your own
     # Kafka cluster or your Docker IP is different

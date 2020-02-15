@@ -1,0 +1,23 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: rkovtiuk
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: account_id
+            indexName: idx_account_id
+            tableName: account_role
+
+  - changeSet:
+      id: 2
+      author: rkovtiuk
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: role_id
+            indexName: idx_role_id
+            tableName: account_role

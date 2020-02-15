@@ -1,5 +1,6 @@
 package com.imagespace.account.domain.service;
 
+import com.imagespace.account.common.dto.FullAccountDto;
 import com.imagespace.account.domain.entity.Account;
 import com.imagespace.account.domain.repositories.AccountRepository;
 import lombok.AccessLevel;
@@ -41,9 +42,14 @@ public class AccountService {
         return accountRepository.findOne(exampleOf(accountId, username));
     }
 
+    public Optional<FullAccountDto> findAccountFullInfo(String username) {
+        return accountRepository.findOneByUsername(username).map(FullAccountDto::new);
+    }
+
+    @Transactional
     public Optional<Account> updateAccount(UUID id, String username, UUID avatar, String info) {
         log.debug("Update account '{}' with param: username:'{}' avatar:'{}' info:'{}'.", id, username, avatar, info);
-        return accountRepository.findOneByUsername(username)
+        return accountRepository.findOne(Example.of(new Account().setUsername(username)))
             .map(account -> {
                 Optional.ofNullable(info).filter(not(StringUtils::isEmpty)).ifPresent(account::setInfo);
                 Optional.ofNullable(avatar).filter(not(StringUtils::isEmpty)).ifPresent(account::setAvatar);
@@ -61,5 +67,4 @@ public class AccountService {
     private Example<Account> exampleOf(UUID accountId, String username) {
         return Example.of(new Account().setId(accountId).setUsername(username));
     }
-
 }
