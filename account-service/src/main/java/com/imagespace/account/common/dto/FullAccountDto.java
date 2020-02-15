@@ -28,7 +28,7 @@ public class FullAccountDto extends AccountDto {
     public FullAccountDto(Account account) {
         super(account);
         this.password = account.getPassword();
-        Optional.ofNullable(account.getAccountRoles())
+        Optional.ofNullable(account.getRoles())
             .map(roles -> roles.stream().map(AccountRole::getRole).map(Role::getName).collect(toList()))
             .ifPresent(this::setRoles);
     }

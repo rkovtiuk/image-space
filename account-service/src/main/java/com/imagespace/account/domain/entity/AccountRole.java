@@ -26,7 +26,7 @@ public class AccountRole extends BaseEntity {
     @JoinColumn(name = "account_id")
     Account account;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "role_id")
     Role role;
 

@@ -18,6 +18,10 @@ import static org.springframework.data.annotation.AccessType.Type.PROPERTY;
 @Data @Accessors(chain = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
+@NamedEntityGraph(name = "Account.roles",
+    attributeNodes = @NamedAttributeNode(value = "roles", subgraph = "roles"),
+    subgraphs = @NamedSubgraph(name = "roles", attributeNodes = @NamedAttributeNode("role"))
+)
 public class Account extends BaseEntity {
 
     @Id @AccessType(PROPERTY) UUID id;
@@ -33,7 +37,7 @@ public class Account extends BaseEntity {
     @Column String info;
 
     @OneToMany(mappedBy = "account")
-    List<AccountRole> accountRoles;
+    List<AccountRole> roles;
 
 }
 

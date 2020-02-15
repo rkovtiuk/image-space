@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
 
-    @EntityGraph(attributePaths = {"accountRoles"})
+    @EntityGraph("Account.roles")
     Optional<Account> findOneByUsername(String username);
 
 }
