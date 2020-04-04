@@ -1,5 +1,6 @@
 package com.imagespace.api.domain.service;
 
+import com.imagespace.api.common.dto.AccountDto;
 import com.imagespace.api.domain.client.AccountClient;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +26,13 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return accountClient.findAccountById(username)
-            .map(account -> new User(username, account.getPassword(), getAuthority(account.getId())))
+        return accountClient.findAccount(username)
+            .map(account -> new User(username, account.getPassword(), getAuthority(account)))
             .orElseThrow(() -> new UsernameNotFoundException("Invalid account"));
     }
 
-    private List<SimpleGrantedAuthority> getAuthority(String accountId) {
-        return accountClient.findAllByAccount(accountId).stream()
-            .map(role -> new SimpleGrantedAuthority(role.getName()))
-            .collect(Collectors.toList());
+    private List<SimpleGrantedAuthority> getAuthority(AccountDto account) {
+        return account.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
 }

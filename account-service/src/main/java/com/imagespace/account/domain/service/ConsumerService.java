@@ -37,9 +37,10 @@ public class ConsumerService {
 
         if (kafkaEventConfig.getUpdateSubscriptionPriority().equals(eventName)) {
             processCreatingPost(payload, cr.offset(), cr.key());
-        } else {
-            log.warn("Msg in {} offset with key {} in source topic will be filtered out because of unexpected event name {}", cr.offset(), cr.key(), eventName);
+            return;
         }
+
+        log.warn("Msg in {} offset with key {} in source topic will be filtered out because of unexpected event name {}", cr.offset(), cr.key(), eventName);
     }
 
     private void processCreatingPost(SubscriptionEvent payload, long offset, String key) {

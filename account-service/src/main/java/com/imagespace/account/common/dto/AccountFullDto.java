@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FullAccountDto extends AccountDto {
+public class AccountFullDto extends AccountDto {
 
     @JsonProperty("password")
     String password;
@@ -25,7 +25,7 @@ public class FullAccountDto extends AccountDto {
     @JsonProperty("roles")
     Collection<String> roles;
 
-    public FullAccountDto(Account account) {
+    public AccountFullDto(Account account) {
         super(account);
         this.password = account.getPassword();
         Optional.ofNullable(account.getRoles())

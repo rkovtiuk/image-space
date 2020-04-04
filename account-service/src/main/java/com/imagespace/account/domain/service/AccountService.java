@@ -1,6 +1,6 @@
 package com.imagespace.account.domain.service;
 
-import com.imagespace.account.common.dto.FullAccountDto;
+import com.imagespace.account.common.dto.AccountFullDto;
 import com.imagespace.account.domain.entity.Account;
 import com.imagespace.account.domain.repositories.AccountRepository;
 import lombok.AccessLevel;
@@ -12,9 +12,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,14 +36,16 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "usernames", key = "#accountId + #username")
     public Optional<Account> findAccount(UUID accountId, String username) {
         log.debug("Find account by id '{}' and username '{}'.", accountId, username);
         return accountRepository.findOne(exampleOf(accountId, username));
     }
 
-    public Optional<FullAccountDto> findAccountFullInfo(String username) {
-        return accountRepository.findOneByUsername(username).map(FullAccountDto::new);
+    @Transactional(readOnly = true)
+    public Optional<AccountFullDto> findAccountFullInfo(String username) {
+        return accountRepository.findOneByUsername(username).map(AccountFullDto::new);
     }
 
     @Transactional
@@ -58,6 +60,7 @@ public class AccountService {
             }).map(accountRepository::save);
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "exists", key = "#accountId + #username")
     public boolean exists(UUID accountId, String username) {
         log.debug("Check if account exists for id '{}'.", accountId);

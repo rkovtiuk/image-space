@@ -1,22 +1,23 @@
 package com.imagespace.api.common.dto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Data @Accessors(chain = true)
+import java.util.Collection;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EqualsAndHashCode(of = {"id"})
 public class AccountDto {
 
-    String id;
-
-    String name;
+    String username;
 
     String password;
 
-    String info;
+    Collection<String> roles;
 
 }
