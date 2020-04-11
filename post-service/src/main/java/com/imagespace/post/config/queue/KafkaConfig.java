@@ -1,6 +1,6 @@
-package com.imagespace.post.config.kafka;
+package com.imagespace.post.config.queue;
 
-import com.imagespace.post.common.event.BaseEvent;
+import com.imagespace.post.common.dto.EventDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -42,12 +42,12 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, BaseEvent> producerFactory() {
+    public ProducerFactory<String, EventDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, BaseEvent> kafkaTemplate() {
+    public KafkaTemplate<String, EventDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

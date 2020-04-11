@@ -1,7 +1,7 @@
 package com.imagespace.post.domain.service;
 
+import com.imagespace.post.common.dto.EventDto;
 import com.imagespace.post.common.dto.SourceDto;
-import com.imagespace.post.common.event.BaseEvent;
 import com.imagespace.post.common.exception.HttpExceptionBuilder;
 import com.imagespace.post.domain.entity.Like;
 import com.imagespace.post.domain.entity.Post;
@@ -102,7 +102,7 @@ public class PostService {
         log.info("Creating a post from account '{}'.", accountId);
         var post = postRepository.save(new Post(UUID.randomUUID(), UUID.randomUUID(), MIN_LIKES_COUNT, accountId));
         var source = new SourceDto(post.getSource(), sourceData);
-        Optional<SendResult<String, BaseEvent>> sendResult = producerService.sendCreateSourceEvent(source);
+        Optional<SendResult<String, EventDto>> sendResult = producerService.sendCreateSourceEvent(source);
         if (sendResult.isEmpty()) {
             throw HttpExceptionBuilder.badRequest("Can't create event for saving source from post.");
         }

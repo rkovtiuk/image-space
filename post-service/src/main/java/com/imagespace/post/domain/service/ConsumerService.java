@@ -1,9 +1,11 @@
 package com.imagespace.post.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.imagespace.post.common.event.PostEvent;
-import com.imagespace.post.config.kafka.KafkaEventConfig;
+import com.imagespace.post.common.dto.EventDto;
+import com.imagespace.post.common.dto.PostDto;
+import com.imagespace.post.config.queue.KafkaEventConfig;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -32,8 +34,8 @@ public class ConsumerService {
     @KafkaListener(topics = "${kafka-properties.topics.post}", groupId = "${spring.kafka.consumer.group-id}")
     public void consumeEvents(ConsumerRecord<String, String> cr) throws JsonProcessingException {
         log.info("Kafka consumer received key {}: Type [{}] | Payload: {} | Record: {}", cr.key(), typeIdHeader(cr.headers()), cr.value(), cr.toString());
-        var payload = objectMapper.readValue(cr.value(), PostEvent.class);
-        var eventName = ofNullable(payload).map(PostEvent::getEventName).orElse(EMPTY);
+        EventDto<PostDto> payload = objectMapper.readValue(cr.value(), new TypeReference<EventDto<PostDto>>() {});
+        var eventName = ofNullable(payload).map(EventDto::getEventName).orElse(EMPTY);
 
         if (kafkaEventConfig.getCreatePost().equals(eventName)) {
             processCreatingPost(payload, cr.offset(), cr.key());
@@ -44,16 +46,16 @@ public class ConsumerService {
         }
     }
 
-    private void processCreatingPost(PostEvent payload, long offset, String key) {
+    private void processCreatingPost(EventDto<PostDto> payload, long offset, String key) {
         log.info("Start creating post from kafka msg in {} offset with key {}", offset, key);
-        ofNullable(payload).map(PostEvent::getPayload).ifPresentOrElse(
+        ofNullable(payload).map(EventDto::getPayload).ifPresentOrElse(
             post -> postService.createPost(post.getSourceId(), post.getAccountId()),
             () -> log.error("Empty Post payload in {} offset with key {}", offset, key));
     }
 
-    private void processDeletingPost(PostEvent payload, long offset, String key) {
+    private void processDeletingPost(EventDto<PostDto> payload, long offset, String key) {
         log.info("Start removing source from kafka msg in {} offset with key {}", offset, key);
-        ofNullable(payload).map(PostEvent::getPayload).ifPresentOrElse(
+        ofNullable(payload).map(EventDto::getPayload).ifPresentOrElse(
             post -> postService.deletePost(post.getId(), post.getAccountId()),
             () -> log.error("Empty Post payload in {} offset with key {}", offset, key));
     }

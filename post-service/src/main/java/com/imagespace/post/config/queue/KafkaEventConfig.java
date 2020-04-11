@@ -1,4 +1,4 @@
-package com.imagespace.post.config.kafka;
+package com.imagespace.post.config.queue;
 
 import lombok.AccessLevel;
 import lombok.Data;
