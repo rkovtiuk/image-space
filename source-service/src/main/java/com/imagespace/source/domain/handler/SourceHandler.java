@@ -52,14 +52,17 @@ public class SourceHandler {
     }
 
     private Mono<ServerResponse> getSourceData(String id, SourceType sourceType) {
-        switch (sourceType) {
-            case PREVIEW: return this.sourceRepository.findPreviewSourceById(id).flatMap(ServerResponseFactory::getServerResponse)
-                .switchIfEmpty(ServerResponseFactory.getServerResponse());
-            case SMALL: return this.sourceRepository.findSmallSourceById(id).flatMap(ServerResponseFactory::getServerResponse)
-                .switchIfEmpty(ServerResponseFactory.getServerResponse());
-            default: return this.sourceRepository.findPostSourceById(id).flatMap(ServerResponseFactory::getServerResponse)
-                .switchIfEmpty(ServerResponseFactory.getServerResponse());
-        }
+        return switch (sourceType) {
+            case PREVIEW -> this.sourceRepository
+                    .findPreviewSourceById(id).flatMap(ServerResponseFactory::getServerResponse)
+                    .switchIfEmpty(ServerResponseFactory.getServerResponse());
+            case SMALL -> this.sourceRepository.findSmallSourceById(id)
+                    .flatMap(ServerResponseFactory::getServerResponse)
+                    .switchIfEmpty(ServerResponseFactory.getServerResponse());
+            default -> this.sourceRepository.findPostSourceById(id)
+                    .flatMap(ServerResponseFactory::getServerResponse)
+                    .switchIfEmpty(ServerResponseFactory.getServerResponse());
+        };
     }
 
 }
