@@ -16,7 +16,7 @@
     </parent>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>14</java.version>
         <jaxb-version>2.3.0</jaxb-version>
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <javax-activation-version>1.1.1</javax-activation-version>
@@ -78,5 +78,31 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>14</release>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>--enable-preview</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
