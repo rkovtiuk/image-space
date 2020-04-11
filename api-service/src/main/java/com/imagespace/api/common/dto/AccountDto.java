@@ -1,23 +1,10 @@
 package com.imagespace.api.common.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class AccountDto {
-
-    String username;
-
-    String password;
-
-    Collection<String> roles;
-
+@Getter
+public record AccountDto(String username, String password, Collection<String> roles) implements Serializable {
 }
